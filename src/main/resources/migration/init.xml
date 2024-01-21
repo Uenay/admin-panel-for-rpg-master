@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="init race" author="author name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="race"/>
+            </not>
+        </preConditions>
+    <sql>
+        Create table race
+        (
+            id bigserial PRIMARY KEY,
+            name VARCHAR
+        )
+    </sql>
+    </changeSet>
+
+    <changeSet id="init profession" author="author name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="profession"/>
+            </not>
+        </preConditions>
+        <sql>
+            Create table profession
+            (
+                id bigserial PRIMARY KEY,
+                name VARCHAR
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="init player" author="author name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="player"/>
+            </not>
+        </preConditions>
+        <sql>
+            Create table player (
+                id bigserial PRIMARY KEY,
+                name VARCHAR(12),
+                title VARCHAR(30) ,
+                race_id BIGSERIAL REFERENCES race (id),
+                profession_id BIGSERIAL REFERENCES profession (id),
+                birthday DATE,
+                banned BOOLEAN,
+                experience INT,
+                level INT,
+                untilNextLevel INT
+                )
+        </sql>
+    </changeSet>
+</databaseChangeLog>

@@ -8,18 +8,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
 public class PlayerDto {
+    private long id;
     private String name;
     private String title;
     private Race race;
     private Profession profession;
     private int experience;
-    private int level;
-    private int untilNextLevel;
+    private double level;
+    private double untilNextLevel;
     private Date birthday;
     private Boolean banned;
 }

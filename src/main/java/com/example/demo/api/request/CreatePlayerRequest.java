@@ -1,27 +1,26 @@
-package com.example.demo.dto;
+package com.example.demo.api.request;
 
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
-@AllArgsConstructor
-@Builder
+
+@SuperBuilder
 public class CreatePlayerRequest {
-private String name;
-private String title;
-private Race race;
-private Profession profession;
-private int experience;
-private int level;
-private int untilNextLevel;
-private Date birthday;
-private Boolean banned;
-public void setName(String name){
-    this.name = name;
-    }
+    private String name;
+    private String title;
+    private Race race;
+    private Profession profession;
+    private int experience;
+    private int level;
+    private int untilNextLevel;
+    private Date birthday;
+    private Boolean banned;
+
+    public void setName(String name){
+        this.name = name;
+        }
     public void setTitle(String title){
     this.title = title;
     }
@@ -81,5 +80,20 @@ public void setName(String name){
 
     public Boolean getBanned() {
         return banned;
+    }
+
+    @Override
+    public String toString() {
+        return "CreatePlayerRequest{" +
+                "name='" + name + '\'' +
+                ", title='" + title + '\'' +
+                ", race=" + race +
+                ", profession=" + profession +
+                ", experience=" + experience +
+                ", level=" + level +
+                ", untilNextLevel=" + untilNextLevel +
+                ", birthday=" + birthday +
+                ", banned=" + banned +
+                '}';
     }
 }
