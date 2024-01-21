@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class PlayerControllerImpl {
+public class PlayerControllerImpl implements PlayerController{
     private final PlayerService playerService;
 
     public CreatePlayerResponse createPlayer(CreatePlayerRequest createPlayerRequest){
