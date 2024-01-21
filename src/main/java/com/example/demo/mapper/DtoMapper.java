@@ -7,7 +7,17 @@ import com.example.demo.dto.PlayerDto;
 
 public class DtoMapper {
     public static PlayerDto convertToPlayerDto(CreatePlayerRequest createPlayerRequest) {
-        return null; //todo
+        return PlayerDto.builder()
+                .name(createPlayerRequest.getName())
+                .birthday(createPlayerRequest.getBirthday())
+                .race(createPlayerRequest.getRace())
+                .title(createPlayerRequest.getTitle())
+                .level(createPlayerRequest.getLevel())
+                .banned(createPlayerRequest.getBanned())
+                .experience(createPlayerRequest.getExperience())
+                .profession(createPlayerRequest.getProfession())
+                .untilNextLevel(createPlayerRequest.getUntilNextLevel())
+                .build();
     }
 
     public static CreatePlayerResponse convertToResponse(PlayerDto playerDto) {

@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Builder
 public class PlayerDto {
-    private long id;
+    private Long id;
     private String name;
     private String title;
     private Race race;
