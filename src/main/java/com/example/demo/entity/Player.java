@@ -1,12 +1,10 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -22,11 +20,13 @@ public class Player {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private Race race;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "race_id")
+    private RaceEntity race;
 
-    @Column(nullable = false)
-    private Profession profession;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profession_id")
+    private ProfessionEntity profession;
 
     @Column
     private int experience;
@@ -34,7 +34,7 @@ public class Player {
     @Column
     private double level = (Math.sqrt(2500 + 200 * experience) - 50) / 100;
 
-    @Column
+    @Column(name = "untilnextlevel")
     private double untilNextLevel = 50 * (level + 1) * (level + 2) - experience;
 
     @Column(nullable = false)
@@ -42,4 +42,5 @@ public class Player {
 
     @Column(nullable = false)
     private Boolean banned;
+
 }
