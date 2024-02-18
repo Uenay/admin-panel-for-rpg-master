@@ -24,6 +24,7 @@ public class DtoMapper {
                 .experience(createPlayerRequest.getExperience())
                 .build();
     }
+
     public static PlayerDto convertToPlayerDto(UpdatePlayerRequest updatePlayerRequest) {
         return PlayerDto.builder()
                 .id(updatePlayerRequest.getId())
