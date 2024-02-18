@@ -2,7 +2,7 @@ package com.example.demo.api.controller;
 
 
 import com.example.demo.api.request.CreatePlayerRequest;
-import com.example.demo.api.request.GetFilteredPlayersRequest;
+import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.request.UpdatePlayerRequest;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
@@ -29,7 +29,7 @@ public interface PlayerController {
     @PostMapping("/rest/players/{id}")
     UpdatePlayerResponse updatePlayer(@PathVariable("id") Long id, @RequestBody UpdatePlayerRequest updatePlayerRequest);
     @GetMapping("/rest/players")
-    List<GetPlayerResponse> getFilteredPlayers(@RequestBody GetFilteredPlayersRequest getFilteredPlayersRequest);
+    List<GetPlayerResponse> getFilteredPlayers(@RequestBody PlayerFilter playerFilter);
     @GetMapping("/rest/players/count")
-    int getFilteredPlayersCount(@RequestBody GetFilteredPlayersRequest getFilteredPlayersRequest);
+    int getFilteredPlayersCount(@RequestBody PlayerFilter playerFilter);
 }

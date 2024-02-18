@@ -1,7 +1,7 @@
 package com.example.demo.api.controller;
 
 import com.example.demo.api.request.CreatePlayerRequest;
-import com.example.demo.api.request.GetFilteredPlayersRequest;
+import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.request.UpdatePlayerRequest;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
@@ -48,12 +48,12 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToUpdateResponse(updatedPlayer);
     }
 
-    public List<GetPlayerResponse> getFilteredPlayers(GetFilteredPlayersRequest getFilteredPlayersRequest) {
-        List<GetPlayerResponse> filteredPlayers = playerService.getFilteredPlayers(getFilteredPlayersRequest);
+    public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
+        List<GetPlayerResponse> filteredPlayers = playerService.getFilteredPlayers(playerFilter);
         return ResponseEntity.ok(filteredPlayers).getBody();
     }
-    public int getFilteredPlayersCount(GetFilteredPlayersRequest getFilteredPlayersRequest){
-        int filteredPlayers = playerService.getFilteredPlayersCount(getFilteredPlayersRequest);
+    public int getFilteredPlayersCount(PlayerFilter playerFilter){
+        int filteredPlayers = playerService.getFilteredPlayersCount(playerFilter);
         return filteredPlayers;
     }
 }

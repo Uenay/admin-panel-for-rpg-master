@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 
-import com.example.demo.api.request.GetFilteredPlayersRequest;
+import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.entity.*;
 import com.example.demo.dto.PlayerDto;
@@ -12,7 +12,6 @@ import com.example.demo.repository.RaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
+    private final ProfessionRepository professionRepository;
+    private final RaceRepository raceRepository;
 
     @Override
     public PlayerDto createPlayer(PlayerDto playerDto) {
@@ -46,9 +47,6 @@ public class PlayerServiceImpl implements PlayerService {
     public void deletePlayer(Long id) {
         playerRepository.delete(playerRepository.findById(id).orElseThrow());
     }
-
-    private final ProfessionRepository professionRepository;
-    private final RaceRepository raceRepository;
 
     @Override
     public PlayerDto updatePlayer(PlayerDto updatePlayerRequest) {
@@ -79,43 +77,19 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<GetPlayerResponse> getFilteredPlayers(GetFilteredPlayersRequest getFilteredPlayersRequest) {
-        List<Player> filteredPlayers = new ArrayList<>();
-        List<Player> players = playerRepository.findAll();
-        for (Player player : players) {
-            if ((getFilteredPlayersRequest.getName() == null || player.getName().contains(getFilteredPlayersRequest.getName()))
-                    && (getFilteredPlayersRequest.getTitle() == null || player.getTitle().contains(getFilteredPlayersRequest.getTitle()))
-                    && (getFilteredPlayersRequest.getRace() == null || player.getRace().getId() == raceRepository.findByName(getFilteredPlayersRequest.getRace().toString()).getId())
-                    && (getFilteredPlayersRequest.getProfession() == null || player.getProfession().getId() == professionRepository.findByName(getFilteredPlayersRequest.getProfession().toString()).getId())
-                    && (getFilteredPlayersRequest.getMinExperience() == null || player.getExperience() >= getFilteredPlayersRequest.getMinExperience())
-                    && (getFilteredPlayersRequest.getMaxExperience() == null || player.getExperience() <= getFilteredPlayersRequest.getMaxExperience())
-                    && (getFilteredPlayersRequest.getMinLevel() == null || player.getLevel() >= getFilteredPlayersRequest.getMinLevel())
-                    && (getFilteredPlayersRequest.getMaxLevel() == null || player.getLevel() <= getFilteredPlayersRequest.getMaxLevel())
-                    && (getFilteredPlayersRequest.getBanned() == null || player.getBanned() == getFilteredPlayersRequest.getBanned())) {
-                filteredPlayers.add(player);
-            }
-        }
-        return filteredPlayers.stream()
-                .map(DtoMapper::convertToGetResponse)
-                .collect(Collectors.toList());
+    public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
+        /*
+            1. просим у базы ровно столько сколько нужно через criteria api
+            2. конвертируем ответ
+         */
+        return null;
     }
+
     @Override
-    public int getFilteredPlayersCount(GetFilteredPlayersRequest getFilteredPlayersRequest) {
-        List<Player> players = playerRepository.findAll();
-        int filteredPlayers = 0;
-        for (Player player : players) {
-            if ((getFilteredPlayersRequest.getName() == null || player.getName().contains(getFilteredPlayersRequest.getName()))
-                    && (getFilteredPlayersRequest.getTitle() == null || player.getTitle().contains(getFilteredPlayersRequest.getTitle()))
-                    && (getFilteredPlayersRequest.getRace() == null || player.getRace().getId() == raceRepository.findByName(getFilteredPlayersRequest.getRace().toString()).getId())
-                    && (getFilteredPlayersRequest.getProfession() == null || player.getProfession().getId() == professionRepository.findByName(getFilteredPlayersRequest.getProfession().toString()).getId())
-                    && (getFilteredPlayersRequest.getMinExperience() == null || player.getExperience() >= getFilteredPlayersRequest.getMinExperience())
-                    && (getFilteredPlayersRequest.getMaxExperience() == null || player.getExperience() <= getFilteredPlayersRequest.getMaxExperience())
-                    && (getFilteredPlayersRequest.getMinLevel() == null || player.getLevel() >= getFilteredPlayersRequest.getMinLevel())
-                    && (getFilteredPlayersRequest.getMaxLevel() == null || player.getLevel() <= getFilteredPlayersRequest.getMaxLevel())
-                    && (getFilteredPlayersRequest.getBanned() == null || player.getBanned() == getFilteredPlayersRequest.getBanned())) {
-                filteredPlayers++;
-            }
-        }
-        return filteredPlayers;
+    public int getFilteredPlayersCount(PlayerFilter playerFilter) {
+        /*
+            запрашиваем из базы одно число - количество таких игроков (тоже через criteria api)
+         */
+        return 0;
     }
 }
