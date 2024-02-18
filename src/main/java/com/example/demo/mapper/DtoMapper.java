@@ -15,7 +15,7 @@ import com.example.demo.entity.RaceEntity;
 public class DtoMapper {
     public static PlayerDto convertToPlayerDto(CreatePlayerRequest createPlayerRequest) {
         return PlayerDto.builder()
-                .name(createPlayerRequest.getName())
+                .name(createPlayerRequest.getName() + "sada")
                 .birthday(createPlayerRequest.getBirthday())
                 .race(createPlayerRequest.getRace())
                 .title(createPlayerRequest.getTitle())
