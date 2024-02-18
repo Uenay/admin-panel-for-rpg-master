@@ -1,18 +1,16 @@
 package com.example.demo.api.request;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 
 @SuperBuilder
 @Data
-public class UpdatePlayerRequest extends CreatePlayerRequest {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class UpdatePlayerRequest extends BasePlayerRequest {
     private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    private Integer experience;
 }

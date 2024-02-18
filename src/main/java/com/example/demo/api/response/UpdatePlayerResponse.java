@@ -5,6 +5,5 @@ import lombok.experimental.SuperBuilder;
 
 @ToString(callSuper = true)
 @SuperBuilder
-public class CreatePlayerResponse extends BasePlayerResponse {
-
+public class UpdatePlayerResponse extends BasePlayerResponse {
 }
