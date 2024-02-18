@@ -1,17 +1,15 @@
-package com.example.demo.dto;
+package com.example.demo.api.response;
 
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
+
 @Data
-@Builder
-public class PlayerDto {
+@SuperBuilder
+public class BasePlayerResponse {
     private Long id;
     private String name;
     private String title;
