@@ -12,11 +12,6 @@ import com.example.demo.repository.RaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -73,49 +68,9 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
         @Override
-        public List<GetPlayerResponse> getFilteredPlayers(Root<GetPlayerResponse> root, CriteriaBuilder cb, PlayerFilter playerFilter) {
-            CriteriaQuery<GetPlayerResponse> query = cb.createQuery(GetPlayerResponse.class);
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (playerFilter.getName() != null) {
-                predicates.add(cb.like(root.get("name"), "%" + playerFilter.getName() + "%"));
-            }
-            if (playerFilter.getTitle() != null) {
-                predicates.add(cb.like(root.get("title"), "%" + playerFilter.getTitle() + "%"));
-            }
-
-            if (playerFilter.getRace() != null) {
-                predicates.add(cb.equal(root.get("race"), playerFilter.getRace()));
-            }
-
-            if (playerFilter.getProfession() != null) {
-                predicates.add(cb.equal(root.get("profession"), playerFilter.getProfession()));
-            }
-
-            if (playerFilter.getMinExperience() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("experience"), playerFilter.getMinExperience()));
-            }
-
-            if (playerFilter.getMaxExperience() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("experience"), playerFilter.getMaxExperience()));
-            }
-
-            if (playerFilter.getMinLevel() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("level"), playerFilter.getMinLevel()));
-            }
-
-            if (playerFilter.getMaxLevel() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("level"), playerFilter.getMaxLevel()));
-            }
-
-            if (playerFilter.getBanned() != null) {
-                predicates.add(cb.equal(root.get("banned"), playerFilter.getBanned()));
-            }
-
-            query.select(root).where(predicates.toArray(new Predicate[0]));
-            List<GetPlayerResponse> filteredPlayers = query.getResultList();
-
-    }
+        public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
+        return null;
+        }
 
     @Override
     public int getFilteredPlayersCount(PlayerFilter playerFilter) {
