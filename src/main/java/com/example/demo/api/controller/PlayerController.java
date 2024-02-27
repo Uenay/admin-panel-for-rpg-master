@@ -21,8 +21,6 @@ public interface PlayerController {
 
     @GetMapping("/rest/players/{id}")
     GetPlayerResponse getPlayerById(@PathVariable("id") Long id);
-    @GetMapping("/rest/player")
-    List<GetPlayerResponse> getPlayers();
     @DeleteMapping("/rest/player/delete/{id}")
     void deletePlayer(@PathVariable("id") Long id);
 

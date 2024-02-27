@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @RestController
@@ -32,11 +34,6 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToGetResponse(player);
     }
 
-    public List<GetPlayerResponse> getPlayers() {
-        List<GetPlayerResponse> players = playerService.getPlayers();
-        return ResponseEntity.ok(players).getBody();
-    }
-
     public void deletePlayer(Long id) {
         playerService.deletePlayer(id);
     }
@@ -48,7 +45,7 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToUpdateResponse(updatedPlayer);
     }
 
-    public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
+    public List<GetPlayerResponse> getFilteredPlayers(Root<GetPlayerResponse> root, CriteriaBuilder cb, PlayerFilter playerFilter) {
         List<GetPlayerResponse> filteredPlayers = playerService.getFilteredPlayers(playerFilter);
         return ResponseEntity.ok(filteredPlayers).getBody();
     }

@@ -3,8 +3,8 @@ package com.example.demo.service;
 
 import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.response.GetPlayerResponse;
-import com.example.demo.entity.*;
 import com.example.demo.dto.PlayerDto;
+import com.example.demo.entity.Player;
 import com.example.demo.mapper.DtoMapper;
 import com.example.demo.repository.PlayerRepository;
 import com.example.demo.repository.ProfessionRepository;
@@ -12,8 +12,12 @@ import com.example.demo.repository.RaceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,14 +37,6 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerDto getPlayerById(Long id) {
         Player player = playerRepository.findById(id).orElseThrow();
         return DtoMapper.convertToPlayerDto(player);
-    }
-
-    @Override
-    public List<GetPlayerResponse> getPlayers() {
-        List<Player> players = playerRepository.findAll();
-        return players.stream()
-                .map(DtoMapper::convertToGetResponse)
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,13 +72,49 @@ public class PlayerServiceImpl implements PlayerService {
         return DtoMapper.convertToPlayerDto(updatedPlayer);
     }
 
-    @Override
-    public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
-        /*
-            1. просим у базы ровно столько сколько нужно через criteria api
-            2. конвертируем ответ
-         */
-        return null;
+        @Override
+        public List<GetPlayerResponse> getFilteredPlayers(Root<GetPlayerResponse> root, CriteriaBuilder cb, PlayerFilter playerFilter) {
+            CriteriaQuery<GetPlayerResponse> query = cb.createQuery(GetPlayerResponse.class);
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (playerFilter.getName() != null) {
+                predicates.add(cb.like(root.get("name"), "%" + playerFilter.getName() + "%"));
+            }
+            if (playerFilter.getTitle() != null) {
+                predicates.add(cb.like(root.get("title"), "%" + playerFilter.getTitle() + "%"));
+            }
+
+            if (playerFilter.getRace() != null) {
+                predicates.add(cb.equal(root.get("race"), playerFilter.getRace()));
+            }
+
+            if (playerFilter.getProfession() != null) {
+                predicates.add(cb.equal(root.get("profession"), playerFilter.getProfession()));
+            }
+
+            if (playerFilter.getMinExperience() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("experience"), playerFilter.getMinExperience()));
+            }
+
+            if (playerFilter.getMaxExperience() != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("experience"), playerFilter.getMaxExperience()));
+            }
+
+            if (playerFilter.getMinLevel() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("level"), playerFilter.getMinLevel()));
+            }
+
+            if (playerFilter.getMaxLevel() != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("level"), playerFilter.getMaxLevel()));
+            }
+
+            if (playerFilter.getBanned() != null) {
+                predicates.add(cb.equal(root.get("banned"), playerFilter.getBanned()));
+            }
+
+            query.select(root).where(predicates.toArray(new Predicate[0]));
+            List<GetPlayerResponse> filteredPlayers = query.getResultList();
+
     }
 
     @Override
