@@ -167,8 +167,8 @@ class DtoMapperTest {
         assertEquals(playerDto.getBanned(), actualPlayer.getBanned());
         assertEquals(playerDto.getExperience(), actualPlayer.getExperience());
         assertEquals(playerDto.getBirthday(), actualPlayer.getBirthday());
-        assertEquals(playerDto.getProfession().toString(), actualPlayer.getProfession().toString());
-        assertEquals(playerDto.getRace().toString(), actualPlayer.getRace().toString());
+        assertEquals(playerDto.getProfession().toString(), actualPlayer.getProfession().getName());
+        assertEquals(playerDto.getRace().toString(), actualPlayer.getRace().getName());
         assertEquals(playerDto.getTitle(), actualPlayer.getTitle());
         assertEquals(playerDto.getLevel(), actualPlayer.getLevel());
         assertEquals(playerDto.getUntilNextLevel(), actualPlayer.getUntilNextLevel());
