@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.api.request.PlayerFilter;
-import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.dto.PlayerDto;
 
 import java.util.List;
@@ -16,7 +15,7 @@ public interface PlayerService {
 
     void deletePlayer(Long id);
 
-    List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter);
+    List<PlayerDto> getFilteredPlayers(PlayerFilter playerFilter);
 
     int getFilteredPlayersCount(PlayerFilter playerFilter);
 }

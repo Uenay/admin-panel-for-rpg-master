@@ -2,17 +2,22 @@ package com.example.demo.service;
 
 
 import com.example.demo.api.request.PlayerFilter;
-import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Player;
 import com.example.demo.mapper.DtoMapper;
+import com.example.demo.repository.PlayerFilterSpec;
 import com.example.demo.repository.PlayerRepository;
 import com.example.demo.repository.ProfessionRepository;
 import com.example.demo.repository.RaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -67,16 +72,25 @@ public class PlayerServiceImpl implements PlayerService {
         return DtoMapper.convertToPlayerDto(updatedPlayer);
     }
 
-        @Override
-        public List<GetPlayerResponse> getFilteredPlayers(PlayerFilter playerFilter) {
-        return null;
+    @Override
+    public List<PlayerDto> getFilteredPlayers(PlayerFilter playerFilter) {
+        if (playerFilter.getPageNumber() == null || playerFilter.getPageSize() == null || playerFilter.getOrder() == null) {
+            throw new RuntimeException("Данные не заполнены");
         }
+
+        Pageable pageable = PageRequest.of(playerFilter.getPageNumber(), playerFilter.getPageSize(), Sort.by(playerFilter.getOrder().getFieldName()));
+        Page<Player> page =  playerRepository.findAll(new PlayerFilterSpec(playerFilter), pageable);
+        List<Player> playersList = page.getContent();
+        return playersList.stream()
+                .map(DtoMapper::convertToPlayerDto)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public int getFilteredPlayersCount(PlayerFilter playerFilter) {
         /*
             запрашиваем из базы одно число - количество таких игроков (тоже через criteria api)
          */
-        return 0;
+        return (int) playerRepository.count(new PlayerFilterSpec(playerFilter));
     }
 }
