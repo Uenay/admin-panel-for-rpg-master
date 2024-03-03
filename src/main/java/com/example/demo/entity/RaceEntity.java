@@ -12,6 +12,6 @@ public class RaceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 }

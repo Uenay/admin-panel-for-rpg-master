@@ -8,9 +8,7 @@ import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Player;
 import com.example.demo.entity.Profession;
-import com.example.demo.entity.ProfessionEntity;
 import com.example.demo.entity.Race;
-import com.example.demo.entity.RaceEntity;
 
 public class DtoMapper {
     public static PlayerDto convertToPlayerDto(CreatePlayerRequest createPlayerRequest) {
@@ -88,12 +86,6 @@ public class DtoMapper {
         player.setTitle(playerDto.getTitle());
         player.setLevel(playerDto.getLevel());
         player.setBirthday(playerDto.getBirthday());
-        RaceEntity race = new RaceEntity();
-        race.setName(playerDto.getRace().toString());
-        player.setRace(race);
-        ProfessionEntity profession = new ProfessionEntity();
-        profession.setName(playerDto.getProfession().toString());
-        player.setProfession(profession);
         player.setExperience(playerDto.getExperience());
         player.setBanned(playerDto.getBanned());
         player.setUntilNextLevel(playerDto.getUntilNextLevel());

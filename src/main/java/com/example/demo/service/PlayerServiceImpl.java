@@ -20,11 +20,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
+    private final ProfessionRepository professionRepository;
+    private final RaceRepository raceRepository;
 
     @Override
     public PlayerDto createPlayer(PlayerDto playerDto) {
         Player player = DtoMapper.convertToPlayer(playerDto);
+        player.setRace(raceRepository.findByName(playerDto.getRace().name()));
+        player.setProfession(professionRepository.findByName(playerDto.getProfession().name()));
         Player savedPlayer = playerRepository.save(player);
+
+        RaceEntity raceEntity = new RaceEntity();
+        raceEntity.setName("MYNAME");
+        raceRepository.save(raceEntity);
+
+        RaceEntity raceEntity1 = new RaceEntity();
+        raceEntity1.setName("MYNAME2341");
+        raceRepository.save(raceEntity1);
+
         return DtoMapper.convertToPlayerDto(savedPlayer);
     }
 
@@ -47,8 +60,7 @@ public class PlayerServiceImpl implements PlayerService {
         playerRepository.delete(playerRepository.findById(id).orElseThrow());
     }
 
-    private final ProfessionRepository professionRepository;
-    private final RaceRepository raceRepository;
+
 
     @Override
     public PlayerDto updatePlayer(PlayerDto updatePlayerRequest) {
