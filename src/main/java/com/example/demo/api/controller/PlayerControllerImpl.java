@@ -24,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PlayerControllerImpl implements PlayerController {
     private final PlayerService playerService;
-    private PlayerFilter playerFilter;
 
     public CreatePlayerResponse createPlayer(CreatePlayerRequest createPlayerRequest) {
         PlayerDto playerDto = DtoMapper.convertToPlayerDto(createPlayerRequest);
@@ -62,7 +61,8 @@ public class PlayerControllerImpl implements PlayerController {
                                                       Boolean banned,
                                                       Integer pageNumber,
                                                       Integer pageSize) {
-        PlayerFilter.builder()
+
+         PlayerFilter playerFilter = PlayerFilter.builder()
                 .name(name)
                 .title(title)
                 .race(race)
@@ -95,6 +95,19 @@ public class PlayerControllerImpl implements PlayerController {
                                        Integer minLevel,
                                        Integer maxLevel,
                                        Boolean banned) {
+        PlayerFilter playerFilter = PlayerFilter.builder()
+                .name(name)
+                .title(title)
+                .race(race)
+                .profession(profession)
+                .before(before)
+                .after(after)
+                .minExperience(minExperience)
+                .maxExperience(maxExperience)
+                .minLevel(minLevel)
+                .maxLevel(maxLevel)
+                .banned(banned)
+                .build();
         int filteredPlayers = playerService.getFilteredPlayersCount(playerFilter);
         return filteredPlayers;
     }

@@ -21,17 +21,17 @@ public class PlayerFilterSpec implements Specification<Player> {
     public Predicate toPredicate(Root<Player> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         ArrayList<Predicate> predicates = new ArrayList<>();
         if (playerFilter.getName() != null){
-            predicates.add(criteriaBuilder.like(root.get("name"), playerFilter.getName()));
+            predicates.add(criteriaBuilder.like(root.get("name"), "%" + playerFilter.getName() + "%"));
         }
         if (playerFilter.getTitle() != null){
-            predicates.add(criteriaBuilder.like(root.get("title"), playerFilter.getTitle()));
+            predicates.add(criteriaBuilder.like(root.get("title"), "%" + playerFilter.getTitle() + "%"));
         }
-        if (playerFilter.getRace() != null){
-            predicates.add(criteriaBuilder.equal(root.get("race"), playerFilter.getRace()));
-        }
-        if (playerFilter.getProfession() != null){
-            predicates.add(criteriaBuilder.equal(root.get("profession"), playerFilter.getProfession()));
-        }
+//        if (playerFilter.getRace() != null){
+//            predicates.add(criteriaBuilder.equal(root.get("race"), playerFilter.getRace().name()));
+//        }
+//        if (playerFilter.getProfession() != null){
+//            predicates.add(criteriaBuilder.equal(root.get("profession"), playerFilter.getProfession().name()));
+//        }
         if (playerFilter.getMaxLevel() != null){
             predicates.add(criteriaBuilder.lessThan(root.get("level"), playerFilter.getMaxLevel()));
         }
