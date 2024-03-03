@@ -8,11 +8,13 @@ import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
+import com.example.demo.filter.PlayerOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,7 +30,7 @@ class PlayerControllerImplTest {
                 .name("name")
                 .banned(true)
                 .experience(12)
-                .birthday(new Date())
+                .birthday(new Date(1,1, 1))
                 .profession(Profession.ROGUE)
                 .race(Race.DWARF)
                 .title("title")
@@ -50,7 +52,7 @@ class PlayerControllerImplTest {
         Long id = 1L;
         PlayerDto playerDto = PlayerDto.builder()
                 .name("name")
-                .birthday(new Date())
+                .birthday(new Date(1,1, 1))
                 .race(Race.DWARF)
                 .title("title")
                 .level(1)
@@ -82,7 +84,7 @@ class PlayerControllerImplTest {
         Long id = 2L;
         UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
                 .name("name")
-                .birthday(new Date())
+                .birthday(new Date(1,1, 1))
                 .race(Race.DWARF)
                 .title("title")
                 .banned(false)
@@ -103,6 +105,21 @@ class PlayerControllerImplTest {
 
     @Test
     void getFilteredPlayers() {
+        String name = "name";
+        String title = "title";
+        Race race = Race.DWARF;
+        Profession profession = Profession.ROGUE;
+        Date before = new Date(1,1, 1);
+        Date after = new Date(1,1, 99)
+        PlayerOrder order = PlayerOrder.ID;
+        Long minExperience = 1L;
+        Long maxExperience = 100L;
+        Integer minLevel = 1;
+        Integer maxLevel = 100;
+        Boolean banned = true;
+        Integer pageNumber = 1;
+        Integer pageSize = 20;
+
     }
 
     @Test
