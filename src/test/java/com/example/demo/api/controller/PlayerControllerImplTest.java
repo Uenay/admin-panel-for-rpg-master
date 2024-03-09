@@ -2,7 +2,6 @@ package com.example.demo.api.controller;
 
 import com.example.demo.api.request.CreatePlayerRequest;
 import com.example.demo.api.request.UpdatePlayerRequest;
-import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +34,9 @@ class PlayerControllerImplTest {
     private ObjectMapper objectMapper;
 
     private static final String CREATE_PLAYER_URL = "/rest/player/create";
+    private static final String GET_PLAYER_URL = "/rest/players/{id}";
+    private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
+    private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
 
     @Test
     void createPlayerMvc() throws Exception {
@@ -57,39 +60,19 @@ class PlayerControllerImplTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value(createPlayerRequest.getName()))
+                .andExpect(jsonPath("$.banned").value(createPlayerRequest.getBanned()))
+                .andExpect(jsonPath("$.experience").value(createPlayerRequest.getExperience()))
+                .andExpect(jsonPath("$.birthday").value(createPlayerRequest.getBirthday()))
+                .andExpect(jsonPath("$.profession").value(createPlayerRequest.getProfession()))
+                .andExpect(jsonPath("$.race").value(createPlayerRequest.getRace()))
                 .andExpect(jsonPath("$.title").value(createPlayerRequest.getTitle()));
     }
-
-
     @Test
-    void createPlayer() {
-        CreatePlayerRequest createPlayerRequest = CreatePlayerRequest.builder()
-                .name("name")
-                .banned(true)
-                .experience(12)
-                .birthday(new Date(1,1, 1))
-                .profession(Profession.ROGUE)
-                .race(Race.DWARF)
-                .title("title")
-                .build();
-        CreatePlayerResponse createPlayerResponse = playerController.createPlayer(createPlayerRequest);
-
-        assertEquals(createPlayerRequest.getName(), createPlayerResponse.getName());
-        assertEquals(createPlayerRequest.getBanned(), createPlayerResponse.getBanned());
-        assertEquals(createPlayerRequest.getExperience(), createPlayerResponse.getExperience());
-        assertEquals(createPlayerRequest.getBirthday(), createPlayerResponse.getBirthday());
-        assertEquals(createPlayerRequest.getProfession(), createPlayerResponse.getProfession());
-        assertEquals(createPlayerRequest.getRace(), createPlayerResponse.getRace());
-        assertEquals(createPlayerRequest.getTitle(), createPlayerResponse.getTitle());
-    }
-
-
-    @Test
-    void getPlayerById() {
+    void getPlayerByIdMvc() throws Exception {
         Long id = 1L;
         PlayerDto playerDto = PlayerDto.builder()
                 .name("name")
-                .birthday(new Date(1,1, 1))
+                .birthday(new Date(1, 1, 1))
                 .race(Race.DWARF)
                 .title("title")
                 .level(1)
@@ -99,46 +82,161 @@ class PlayerControllerImplTest {
                 .untilNextLevel(1)
                 .id(1L)
                 .build();
-        GetPlayerResponse getPlayerResponse = playerController.getPlayerById(id);
-        assertEquals(playerDto.getName(), getPlayerResponse.getName());
-        assertEquals(playerDto.getBanned(), getPlayerResponse.getBanned());
-        assertEquals(playerDto.getExperience(), getPlayerResponse.getExperience());
-        assertEquals(playerDto.getBirthday(), getPlayerResponse.getBirthday());
-        assertEquals(playerDto.getProfession().toString(), getPlayerResponse.getProfession().toString());
-        assertEquals(playerDto.getRace().toString(), getPlayerResponse.getRace().toString());
-        assertEquals(playerDto.getTitle(), getPlayerResponse.getTitle());
-        assertEquals(playerDto.getLevel(), getPlayerResponse.getLevel());
-        assertEquals(playerDto.getUntilNextLevel(), getPlayerResponse.getUntilNextLevel());
-        assertEquals(playerDto.getId(), getPlayerResponse.getId());
+
+
+        mockMvc.perform(
+                        get(GET_PLAYER_URL)
+                                .content(objectMapper.writeValueAsString(id))
+                                .header("Content-Type", "application/json")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.name").value(playerDto.getName()))
+                .andExpect(jsonPath("$.banned").value(playerDto.getBanned()))
+                .andExpect(jsonPath("$.experience").value(playerDto.getExperience()))
+                .andExpect(jsonPath("$.birthday").value(playerDto.getBirthday()))
+                .andExpect(jsonPath("$.profession").value(playerDto.getProfession()))
+                .andExpect(jsonPath("$.race").value(playerDto.getRace()))
+                .andExpect(jsonPath("$.title").value(playerDto.getTitle()));
     }
+        @Test
+        void updatePlayerMvc() throws Exception {
+            Long id = 2L;
+            UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
+                    .name("name")
+                    .birthday(new Date(1,1, 1))
+                    .race(Race.DWARF)
+                    .title("title")
+                    .banned(false)
+                    .experience(11)
+                    .profession(Profession.ROGUE)
+                    .id(2L)
+                    .build();
+
+
+            mockMvc.perform(
+                            post(UPDATE_PLAYER_URL)
+                                    .content(objectMapper.writeValueAsString(id))
+                                    .content(objectMapper.writeValueAsString(updatePlayerRequest))
+                                    .header("Content-Type", "application/json")
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id").isNumber())
+                    .andExpect(jsonPath("$.name").value(updatePlayerRequest.getName()))
+                    .andExpect(jsonPath("$.banned").value(updatePlayerRequest.getBanned()))
+                    .andExpect(jsonPath("$.experience").value(updatePlayerRequest.getExperience()))
+                    .andExpect(jsonPath("$.birthday").value(updatePlayerRequest.getBirthday()))
+                    .andExpect(jsonPath("$.profession").value(updatePlayerRequest.getProfession()))
+                    .andExpect(jsonPath("$.race").value(updatePlayerRequest.getRace()))
+                    .andExpect(jsonPath("$.title").value(updatePlayerRequest.getTitle()));
+            @Test
+            void getFilteredPlayersMvc() throws Exception {
+                Long id = 2L;
+                UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
+                        .name("name")
+                        .birthday(new Date(1,1, 1))
+                        .race(Race.DWARF)
+                        .title("title")
+                        .banned(false)
+                        .experience(11)
+                        .profession(Profession.ROGUE)
+                        .id(2L)
+                        .build();
+
+
+                mockMvc.perform(
+                                post(UPDATE_PLAYER_URL)
+                                        .content(objectMapper.writeValueAsString(id))
+                                        .content(objectMapper.writeValueAsString(updatePlayerRequest))
+                                        .header("Content-Type", "application/json")
+                        )
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.id").isNumber())
+                        .andExpect(jsonPath("$.name").value(updatePlayerRequest.getName()))
+                        .andExpect(jsonPath("$.banned").value(updatePlayerRequest.getBanned()))
+                        .andExpect(jsonPath("$.experience").value(updatePlayerRequest.getExperience()))
+                        .andExpect(jsonPath("$.birthday").value(updatePlayerRequest.getBirthday()))
+                        .andExpect(jsonPath("$.profession").value(updatePlayerRequest.getProfession()))
+                        .andExpect(jsonPath("$.race").value(updatePlayerRequest.getRace()))
+                        .andExpect(jsonPath("$.title").value(updatePlayerRequest.getTitle()));
+//    @Test
+//    void createPlayer() {
+//        CreatePlayerRequest createPlayerRequest = CreatePlayerRequest.builder()
+//                .name("name")
+//                .banned(true)
+//                .experience(12)
+//                .birthday(new Date(1,1, 1))
+//                .profession(Profession.ROGUE)
+//                .race(Race.DWARF)
+//                .title("title")
+//                .build();
+//        CreatePlayerResponse createPlayerResponse = playerController.createPlayer(createPlayerRequest);
+//
+//        assertEquals(createPlayerRequest.getName(), createPlayerResponse.getName());
+//        assertEquals(createPlayerRequest.getBanned(), createPlayerResponse.getBanned());
+//        assertEquals(createPlayerRequest.getExperience(), createPlayerResponse.getExperience());
+//        assertEquals(createPlayerRequest.getBirthday(), createPlayerResponse.getBirthday());
+//        assertEquals(createPlayerRequest.getProfession(), createPlayerResponse.getProfession());
+//        assertEquals(createPlayerRequest.getRace(), createPlayerResponse.getRace());
+//        assertEquals(createPlayerRequest.getTitle(), createPlayerResponse.getTitle());
+//    }
+
+
+//    @Test
+//    void getPlayerById() {
+//        Long id = 1L;
+//        PlayerDto playerDto = PlayerDto.builder()
+//                .name("name")
+//                .birthday(new Date(1,1, 1))
+//                .race(Race.DWARF)
+//                .title("title")
+//                .level(1)
+//                .banned(false)
+//                .experience(11)
+//                .profession(Profession.ROGUE)
+//                .untilNextLevel(1)
+//                .id(1L)
+//                .build();
+//        GetPlayerResponse getPlayerResponse = playerController.getPlayerById(id);
+//        assertEquals(playerDto.getName(), getPlayerResponse.getName());
+//        assertEquals(playerDto.getBanned(), getPlayerResponse.getBanned());
+//        assertEquals(playerDto.getExperience(), getPlayerResponse.getExperience());
+//        assertEquals(playerDto.getBirthday(), getPlayerResponse.getBirthday());
+//        assertEquals(playerDto.getProfession().toString(), getPlayerResponse.getProfession().toString());
+//        assertEquals(playerDto.getRace().toString(), getPlayerResponse.getRace().toString());
+//        assertEquals(playerDto.getTitle(), getPlayerResponse.getTitle());
+//        assertEquals(playerDto.getLevel(), getPlayerResponse.getLevel());
+//        assertEquals(playerDto.getUntilNextLevel(), getPlayerResponse.getUntilNextLevel());
+//        assertEquals(playerDto.getId(), getPlayerResponse.getId());
+//    }
 
     @Test
     void deletePlayer() {
     }
 
-    @Test
-    void updatePlayer() {
-        Long id = 2L;
-        UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
-                .name("name")
-                .birthday(new Date(1,1, 1))
-                .race(Race.DWARF)
-                .title("title")
-                .banned(false)
-                .experience(11)
-                .profession(Profession.ROGUE)
-                .id(2L)
-                .build();
-        UpdatePlayerResponse updatePlayerResponse = playerController.updatePlayer(id, updatePlayerRequest);
-        assertEquals(updatePlayerResponse.getName(), updatePlayerRequest.getName());
-        assertEquals(updatePlayerResponse.getBanned(), updatePlayerRequest.getBanned());
-        assertEquals(updatePlayerResponse.getExperience(), updatePlayerRequest.getExperience());
-        assertEquals(updatePlayerResponse.getBirthday(), updatePlayerRequest.getBirthday());
-        assertEquals(updatePlayerResponse.getProfession().toString(), updatePlayerRequest.getProfession().toString());
-        assertEquals(updatePlayerResponse.getRace().toString(), updatePlayerRequest.getRace().toString());
-        assertEquals(updatePlayerResponse.getTitle(), updatePlayerRequest.getTitle());
-        assertEquals(updatePlayerResponse.getId(), updatePlayerRequest.getId());
-    }
+//    @Test
+//    void updatePlayer() {
+//        Long id = 2L;
+//        UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
+//                .name("name")
+//                .birthday(new Date(1,1, 1))
+//                .race(Race.DWARF)
+//                .title("title")
+//                .banned(false)
+//                .experience(11)
+//                .profession(Profession.ROGUE)
+//                .id(2L)
+//                .build();
+//        UpdatePlayerResponse updatePlayerResponse = playerController.updatePlayer(id, updatePlayerRequest);
+//        assertEquals(updatePlayerResponse.getName(), updatePlayerRequest.getName());
+//        assertEquals(updatePlayerResponse.getBanned(), updatePlayerRequest.getBanned());
+//        assertEquals(updatePlayerResponse.getExperience(), updatePlayerRequest.getExperience());
+//        assertEquals(updatePlayerResponse.getBirthday(), updatePlayerRequest.getBirthday());
+//        assertEquals(updatePlayerResponse.getProfession().toString(), updatePlayerRequest.getProfession().toString());
+//        assertEquals(updatePlayerResponse.getRace().toString(), updatePlayerRequest.getRace().toString());
+//        assertEquals(updatePlayerResponse.getTitle(), updatePlayerRequest.getTitle());
+//        assertEquals(updatePlayerResponse.getId(), updatePlayerRequest.getId());
+//    }
 
     @Test
     void getFilteredPlayers() {
