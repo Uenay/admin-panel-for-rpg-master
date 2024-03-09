@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,7 +39,22 @@ class PlayerControllerImplTest {
     private static final String CREATE_PLAYER_URL = "/rest/player/create";
     private static final String GET_PLAYER_URL = "/rest/players/{id}";
     private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
-    private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
+    private static final String GET_FILTERED_PLAYER_URL = "/rest/players";
+//    @GetMapping("/rest/players")
+//    List<GetPlayerResponse> getFilteredPlayers(@RequestParam(required = false) String name,
+//                                               @RequestParam(required = false) String title,
+//                                               @RequestParam(required = false) Race race,
+//                                               @RequestParam(required = false) Profession profession,
+//                                               @RequestParam(required = false) Date before,
+//                                               @RequestParam(required = false) Date after,
+//                                               @RequestParam(required = false, defaultValue = "ID") PlayerOrder order,
+//                                               @RequestParam(required = false) Long minExperience,
+//                                               @RequestParam(required = false) Long maxExperience,
+//                                               @RequestParam(required = false) Integer minLevel,
+//                                               @RequestParam(required = false) Integer maxLevel,
+//                                               @RequestParam(required = false) Boolean banned,
+//                                               @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+//                                               @RequestParam(required = false, defaultValue = "3") Integer pageSize);
 
     @Test
     void createPlayerMvc() throws Exception {
@@ -104,7 +122,7 @@ class PlayerControllerImplTest {
             Long id = 2L;
             UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
                     .name("name")
-                    .birthday(new Date(1,1, 1))
+                    .birthday(new Date(1, 1, 1))
                     .race(Race.DWARF)
                     .title("title")
                     .banned(false)
@@ -129,25 +147,41 @@ class PlayerControllerImplTest {
                     .andExpect(jsonPath("$.profession").value(updatePlayerRequest.getProfession()))
                     .andExpect(jsonPath("$.race").value(updatePlayerRequest.getRace()))
                     .andExpect(jsonPath("$.title").value(updatePlayerRequest.getTitle()));
+        }
             @Test
             void getFilteredPlayersMvc() throws Exception {
-                Long id = 2L;
-                UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
-                        .name("name")
-                        .birthday(new Date(1,1, 1))
-                        .race(Race.DWARF)
-                        .title("title")
-                        .banned(false)
-                        .experience(11)
-                        .profession(Profession.ROGUE)
-                        .id(2L)
-                        .build();
+                String name = "name";
+                String title = "title";
+                Race race = Race.DWARF;
+                Profession profession = Profession.ROGUE;
+                Date before = new Date(1,1, 1);
+                Date after = new Date(1,1, 99);
+                PlayerOrder order = PlayerOrder.ID;
+                Long minExperience = 1L;
+                Long maxExperience = 100L;
+                Integer minLevel = 1;
+                Integer maxLevel = 100;
+                Boolean banned = true;
+                Integer pageNumber = 1;
+                Integer pageSize = 20;
 
 
                 mockMvc.perform(
-                                post(UPDATE_PLAYER_URL)
-                                        .content(objectMapper.writeValueAsString(id))
-                                        .content(objectMapper.writeValueAsString(updatePlayerRequest))
+                                get(GET_FILTERED_PLAYER_URL)
+                                        .content(objectMapper.writeValueAsString(title))
+                                        .content(objectMapper.writeValueAsString(name))
+                                        .content(objectMapper.writeValueAsString(race))
+                                        .content(objectMapper.writeValueAsString(profession))
+                                        .content(objectMapper.writeValueAsString(before))
+                                        .content(objectMapper.writeValueAsString(after))
+                                        .content(objectMapper.writeValueAsString(order))
+                                        .content(objectMapper.writeValueAsString(minExperience))
+                                        .content(objectMapper.writeValueAsString(maxExperience))
+                                        .content(objectMapper.writeValueAsString(minLevel))
+                                        .content(objectMapper.writeValueAsString(maxLevel))
+                                        .content(objectMapper.writeValueAsString(banned))
+                                        .content(objectMapper.writeValueAsString(pageNumber))
+                                        .content(objectMapper.writeValueAsString(pageSize))
                                         .header("Content-Type", "application/json")
                         )
                         .andExpect(status().isOk())
