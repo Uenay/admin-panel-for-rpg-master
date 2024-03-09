@@ -2,8 +2,6 @@ package com.example.demo.api.controller;
 
 import com.example.demo.api.request.CreatePlayerRequest;
 import com.example.demo.api.request.UpdatePlayerRequest;
-import com.example.demo.api.response.GetPlayerResponse;
-import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
@@ -14,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,21 +36,6 @@ class PlayerControllerImplTest {
     private static final String GET_PLAYER_URL = "/rest/players/{id}";
     private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
     private static final String GET_FILTERED_PLAYER_URL = "/rest/players";
-//    @GetMapping("/rest/players")
-//    List<GetPlayerResponse> getFilteredPlayers(@RequestParam(required = false) String name,
-//                                               @RequestParam(required = false) String title,
-//                                               @RequestParam(required = false) Race race,
-//                                               @RequestParam(required = false) Profession profession,
-//                                               @RequestParam(required = false) Date before,
-//                                               @RequestParam(required = false) Date after,
-//                                               @RequestParam(required = false, defaultValue = "ID") PlayerOrder order,
-//                                               @RequestParam(required = false) Long minExperience,
-//                                               @RequestParam(required = false) Long maxExperience,
-//                                               @RequestParam(required = false) Integer minLevel,
-//                                               @RequestParam(required = false) Integer maxLevel,
-//                                               @RequestParam(required = false) Boolean banned,
-//                                               @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
-//                                               @RequestParam(required = false, defaultValue = "3") Integer pageSize);
 
     @Test
     void createPlayerMvc() throws Exception {
@@ -150,12 +131,38 @@ class PlayerControllerImplTest {
         }
             @Test
             void getFilteredPlayersMvc() throws Exception {
+                PlayerDto player1 = PlayerDto.builder()
+                        .name("name")
+                        .birthday(new Date(1, 1, 1))
+                        .race(Race.DWARF)
+                        .title("title")
+                        .level(1)
+                        .banned(false)
+                        .experience(11)
+                        .profession(Profession.ROGUE)
+                        .untilNextLevel(1)
+                        .id(1L)
+                        .build();
+                PlayerDto player2 = PlayerDto.builder()
+                        .name("name2")
+                        .birthday(new Date(1, 1, 1))
+                        .race(Race.ELF)
+                        .title("title2")
+                        .level(1)
+                        .banned(false)
+                        .experience(22)
+                        .profession(Profession.ROGUE)
+                        .untilNextLevel(1)
+                        .id(1L)
+                        .build();
+                List<PlayerDto> players = Arrays.asList(player1, player2);
+
                 String name = "name";
                 String title = "title";
                 Race race = Race.DWARF;
                 Profession profession = Profession.ROGUE;
-                Date before = new Date(1,1, 1);
-                Date after = new Date(1,1, 99);
+                Date before = new Date(1, 1, 1);
+                Date after = new Date(1, 1, 99);
                 PlayerOrder order = PlayerOrder.ID;
                 Long minExperience = 1L;
                 Long maxExperience = 100L;
@@ -168,31 +175,32 @@ class PlayerControllerImplTest {
 
                 mockMvc.perform(
                                 get(GET_FILTERED_PLAYER_URL)
-                                        .content(objectMapper.writeValueAsString(title))
-                                        .content(objectMapper.writeValueAsString(name))
-                                        .content(objectMapper.writeValueAsString(race))
-                                        .content(objectMapper.writeValueAsString(profession))
-                                        .content(objectMapper.writeValueAsString(before))
-                                        .content(objectMapper.writeValueAsString(after))
-                                        .content(objectMapper.writeValueAsString(order))
-                                        .content(objectMapper.writeValueAsString(minExperience))
-                                        .content(objectMapper.writeValueAsString(maxExperience))
-                                        .content(objectMapper.writeValueAsString(minLevel))
-                                        .content(objectMapper.writeValueAsString(maxLevel))
-                                        .content(objectMapper.writeValueAsString(banned))
-                                        .content(objectMapper.writeValueAsString(pageNumber))
-                                        .content(objectMapper.writeValueAsString(pageSize))
+                                        .param(objectMapper.writeValueAsString(title))
+                                        .param(objectMapper.writeValueAsString(name))
+                                        .param(objectMapper.writeValueAsString(race))
+                                        .param(objectMapper.writeValueAsString(profession))
+                                        .param(objectMapper.writeValueAsString(before))
+                                        .param(objectMapper.writeValueAsString(after))
+                                        .param(objectMapper.writeValueAsString(order))
+                                        .param(objectMapper.writeValueAsString(minExperience))
+                                        .param(objectMapper.writeValueAsString(maxExperience))
+                                        .param(objectMapper.writeValueAsString(minLevel))
+                                        .param(objectMapper.writeValueAsString(maxLevel))
+                                        .param(objectMapper.writeValueAsString(banned))
+                                        .param(objectMapper.writeValueAsString(pageNumber))
+                                        .param(objectMapper.writeValueAsString(pageSize))
                                         .header("Content-Type", "application/json")
                         )
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.id").isNumber())
-                        .andExpect(jsonPath("$.name").value(updatePlayerRequest.getName()))
-                        .andExpect(jsonPath("$.banned").value(updatePlayerRequest.getBanned()))
-                        .andExpect(jsonPath("$.experience").value(updatePlayerRequest.getExperience()))
+                        .andExpect(jsonPath("$.name").value(name))
+                        .andExpect(jsonPath("$.banned").value(banned))
+                        .andExpect(jsonPath("$.experience").value())
                         .andExpect(jsonPath("$.birthday").value(updatePlayerRequest.getBirthday()))
                         .andExpect(jsonPath("$.profession").value(updatePlayerRequest.getProfession()))
                         .andExpect(jsonPath("$.race").value(updatePlayerRequest.getRace()))
                         .andExpect(jsonPath("$.title").value(updatePlayerRequest.getTitle()));
+            }
 //    @Test
 //    void createPlayer() {
 //        CreatePlayerRequest createPlayerRequest = CreatePlayerRequest.builder()
