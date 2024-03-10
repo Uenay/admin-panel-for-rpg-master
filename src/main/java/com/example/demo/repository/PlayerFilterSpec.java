@@ -2,10 +2,14 @@ package com.example.demo.repository;
 
 import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.entity.Player;
+import com.example.demo.entity.Profession;
+import com.example.demo.entity.Race;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
@@ -26,12 +30,15 @@ public class PlayerFilterSpec implements Specification<Player> {
         if (playerFilter.getTitle() != null){
             predicates.add(criteriaBuilder.like(root.get("title"), "%" + playerFilter.getTitle() + "%"));
         }
-//        if (playerFilter.getRace() != null){
-//            predicates.add(criteriaBuilder.equal(root.get("race"), playerFilter.getRace().name()));
-//        }
-//        if (playerFilter.getProfession() != null){
-//            predicates.add(criteriaBuilder.equal(root.get("profession"), playerFilter.getProfession().name()));
-//        }
+        if (playerFilter.getRace() != null){
+            Join<Player, Race> join = root.join("race", JoinType.INNER);
+            predicates.add(criteriaBuilder.equal(join.get("name"), playerFilter.getRace().name()));
+        }
+        if (playerFilter.getProfession() != null){
+            Join<Player, Profession> join = root.join("profession", JoinType.INNER);
+            predicates.add(criteriaBuilder.equal(join.get("name"), playerFilter.getProfession().name()));
+        }
+
         if (playerFilter.getMaxLevel() != null){
             predicates.add(criteriaBuilder.lessThan(root.get("level"), playerFilter.getMaxLevel()));
         }
