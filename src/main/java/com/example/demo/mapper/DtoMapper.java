@@ -10,6 +10,9 @@ import com.example.demo.entity.Player;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DtoMapper {
     public static PlayerDto convertToPlayerDto(CreatePlayerRequest createPlayerRequest) {
         return PlayerDto.builder()
@@ -79,6 +82,28 @@ public class DtoMapper {
                 .untilNextLevel(player.getUntilNextLevel())
                 .build();
     }
+    public static List<GetPlayerResponse> convertToGetResponse(List<PlayerDto> playerDtos) {
+        List<GetPlayerResponse> getPlayerResponseList = new ArrayList<>();
+
+        for (PlayerDto playerDto : playerDtos) {
+            GetPlayerResponse getPlayerResponse = GetPlayerResponse.builder()
+                    .id(playerDto.getId())
+                    .name(playerDto.getName())
+                    .title(playerDto.getTitle())
+                    .race(playerDto.getRace())
+                    .profession(playerDto.getProfession())
+                    .experience(playerDto.getExperience())
+                    .level(playerDto.getLevel())
+                    .untilNextLevel(playerDto.getUntilNextLevel())
+                    .birthday(playerDto.getBirthday())
+                    .banned(playerDto.getBanned())
+                    .build();
+
+            getPlayerResponseList.add(getPlayerResponse);
+        }
+        return getPlayerResponseList;
+    }
+
 
     public static Player convertToPlayer(PlayerDto playerDto) {
         Player player = new Player();

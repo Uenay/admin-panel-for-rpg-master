@@ -1,19 +1,23 @@
 package com.example.demo.api.controller;
 
 import com.example.demo.api.request.CreatePlayerRequest;
-import com.example.demo.api.request.GetFilteredPlayersRequest;
+import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.request.UpdatePlayerRequest;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Player;
+import com.example.demo.entity.Profession;
+import com.example.demo.entity.Race;
+import com.example.demo.filter.PlayerOrder;
 import com.example.demo.mapper.DtoMapper;
 import com.example.demo.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,11 +36,6 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToGetResponse(player);
     }
 
-    public List<GetPlayerResponse> getPlayers() {
-        List<GetPlayerResponse> players = playerService.getPlayers();
-        return ResponseEntity.ok(players).getBody();
-    }
-
     public void deletePlayer(Long id) {
         playerService.deletePlayer(id);
     }
@@ -48,12 +47,68 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToUpdateResponse(updatedPlayer);
     }
 
-    public List<GetPlayerResponse> getFilteredPlayers(GetFilteredPlayersRequest getFilteredPlayersRequest) {
-        List<GetPlayerResponse> filteredPlayers = playerService.getFilteredPlayers(getFilteredPlayersRequest);
-        return ResponseEntity.ok(filteredPlayers).getBody();
+    public List<GetPlayerResponse> getFilteredPlayers(String name,
+                                                      String title,
+                                                      Race race,
+                                                      Profession profession,
+                                                      Date before,
+                                                      Date after,
+                                                      PlayerOrder order,
+                                                      Long minExperience,
+                                                      Long maxExperience,
+                                                      Integer minLevel,
+                                                      Integer maxLevel,
+                                                      Boolean banned,
+                                                      Integer pageNumber,
+                                                      Integer pageSize) {
+
+         PlayerFilter playerFilter = PlayerFilter.builder()
+                .name(name)
+                .title(title)
+                .race(race)
+                .profession(profession)
+                .before(before)
+                .after(after)
+                .order(order)
+                .minExperience(minExperience)
+                .maxExperience(maxExperience)
+                .minLevel(minLevel)
+                .maxLevel(maxLevel)
+                .banned(banned)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .build();
+
+        List<PlayerDto> filteredPlayers = playerService.getFilteredPlayers(playerFilter);
+
+        return ResponseEntity.ok(DtoMapper.convertToGetResponse(filteredPlayers)).getBody();
     }
-    public int getFilteredPlayersCount(GetFilteredPlayersRequest getFilteredPlayersRequest){
-        int filteredPlayers = playerService.getFilteredPlayersCount(getFilteredPlayersRequest);
+
+    public int getFilteredPlayersCount(String name,
+                                       String title,
+                                       Race race,
+                                       Profession profession,
+                                       Date before,
+                                       Date after,
+                                       Long minExperience,
+                                       Long maxExperience,
+                                       Integer minLevel,
+                                       Integer maxLevel,
+                                       Boolean banned) {
+        PlayerFilter playerFilter = PlayerFilter.builder()
+                .name(name)
+                .title(title)
+                .race(race)
+                .profession(profession)
+                .before(before)
+                .after(after)
+                .minExperience(minExperience)
+                .maxExperience(maxExperience)
+                .minLevel(minLevel)
+                .maxLevel(maxLevel)
+                .banned(banned)
+                .build();
+        int filteredPlayers = playerService.getFilteredPlayersCount(playerFilter);
         return filteredPlayers;
     }
 }
