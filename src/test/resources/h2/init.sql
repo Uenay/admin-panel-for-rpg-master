@@ -16,7 +16,7 @@ CREATE TABLE profession
 
 CREATE TABLE player
 (
-    id               BIGSERIAL PRIMARY KEY,
+    id               SERIAL PRIMARY KEY,
     name             VARCHAR(12) NOT NULL,
     title            VARCHAR(30) NULL,
     race_id          INTEGER REFERENCES race(id),

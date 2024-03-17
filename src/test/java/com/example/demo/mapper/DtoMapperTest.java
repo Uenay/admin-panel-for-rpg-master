@@ -75,7 +75,7 @@ class DtoMapperTest {
                 .experience(11)
                 .profession(Profession.ROGUE)
                 .untilNextLevel(1)
-                .id(2L)
+                .id(2)
                 .build();
         CreatePlayerResponse actualCreatePlayerResponse = DtoMapper.convertToCreateResponse(playerDto);
         assertEquals(playerDto.getName(), actualCreatePlayerResponse.getName());
@@ -102,7 +102,7 @@ class DtoMapperTest {
                 .experience(11)
                 .profession(Profession.ROGUE)
                 .untilNextLevel(1)
-                .id(2L)
+                .id(2)
                 .build();
         UpdatePlayerResponse actualUpdatePlayerResponse = DtoMapper.convertToUpdateResponse(playerDto);
         assertEquals(playerDto.getName(), actualUpdatePlayerResponse.getName());
@@ -119,28 +119,24 @@ class DtoMapperTest {
 
     @Test
     void convertToGetResponse() {
-        Player player = new Player();
+        PlayerDto player = new PlayerDto();
         player.setName("name");
         player.setBirthday(new Date());
-        RaceEntity race = new RaceEntity();
-        race.setName(Race.DWARF.toString());
-        player.setRace(race);
+        player.setRace(Race.DWARF);
         player.setTitle("title");
         player.setLevel(1);
         player.setBanned(false);
         player.setExperience(11);
-        ProfessionEntity profession = new ProfessionEntity();
-        profession.setName(Profession.ROGUE.toString());
-        player.setProfession(profession);
+        player.setProfession(Profession.ROGUE);
         player.setUntilNextLevel(1);
-        player.setId(2L);
+        player.setId(2);
         GetPlayerResponse actualGetPlayerResponse = DtoMapper.convertToGetResponse(player);
         assertEquals(player.getName(), actualGetPlayerResponse.getName());
         assertEquals(player.getBanned(), actualGetPlayerResponse.getBanned());
         assertEquals(player.getExperience(), actualGetPlayerResponse.getExperience());
         assertEquals(player.getBirthday(), actualGetPlayerResponse.getBirthday());
-        assertEquals(player.getProfession().getName(), actualGetPlayerResponse.getProfession().toString());
-        assertEquals(player.getRace().getName(), actualGetPlayerResponse.getRace().toString());
+        assertEquals(player.getProfession(), actualGetPlayerResponse.getProfession());
+        assertEquals(player.getRace(), actualGetPlayerResponse.getRace());
         assertEquals(player.getTitle(), actualGetPlayerResponse.getTitle());
         assertEquals(player.getLevel(), actualGetPlayerResponse.getLevel());
         assertEquals(player.getUntilNextLevel(), actualGetPlayerResponse.getUntilNextLevel());
@@ -160,7 +156,7 @@ class DtoMapperTest {
                 .experience(11)
                 .profession(Profession.ROGUE)
                 .untilNextLevel(1)
-                .id(2L)
+                .id(2)
                 .build();
         Player actualPlayer = DtoMapper.convertToPlayer(playerDto);
         assertEquals(playerDto.getName(), actualPlayer.getName());
@@ -192,7 +188,7 @@ class DtoMapperTest {
         profession.setName(Profession.ROGUE.toString());
         player.setProfession(profession);
         player.setUntilNextLevel(1);
-        player.setId(2L);
+        player.setId(2);
         PlayerDto actualPlayerDto = DtoMapper.convertToPlayerDto(player);
         assertEquals(player.getName(), actualPlayerDto.getName());
         assertEquals(player.getBanned(), actualPlayerDto.getBanned());

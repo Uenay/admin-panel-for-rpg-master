@@ -4,6 +4,8 @@ package com.example.demo.service;
 import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Player;
+import com.example.demo.entity.ProfessionEntity;
+import com.example.demo.entity.RaceEntity;
 import com.example.demo.mapper.DtoMapper;
 import com.example.demo.repository.PlayerFilterSpec;
 import com.example.demo.repository.PlayerRepository;
@@ -29,29 +31,25 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDto createPlayer(PlayerDto playerDto) {
         Player player = DtoMapper.convertToPlayer(playerDto);
-        player.setRace(raceRepository.findByName(playerDto.getRace().name()));
-        player.setProfession(professionRepository.findByName(playerDto.getProfession().name()));
+        RaceEntity raceEntity = raceRepository.findByName(playerDto.getRace().name());
+        player.setRace(raceEntity);
+
+        ProfessionEntity profession = professionRepository.findByName(playerDto.getProfession().name());
+        player.setProfession(profession);
+
+
         Player savedPlayer = playerRepository.save(player);
-
-        RaceEntity raceEntity = new RaceEntity();
-        raceEntity.setName("MYNAME");
-        raceRepository.save(raceEntity);
-
-        RaceEntity raceEntity1 = new RaceEntity();
-        raceEntity1.setName("MYNAME2341");
-        raceRepository.save(raceEntity1);
-
         return DtoMapper.convertToPlayerDto(savedPlayer);
     }
 
     @Override
-    public PlayerDto getPlayerById(Long id) {
+    public PlayerDto getPlayerById(int id) {
         Player player = playerRepository.findById(id).orElseThrow();
         return DtoMapper.convertToPlayerDto(player);
     }
 
     @Override
-    public void deletePlayer(Long id) {
+    public void deletePlayer(int id) {
         playerRepository.delete(playerRepository.findById(id).orElseThrow());
     }
 

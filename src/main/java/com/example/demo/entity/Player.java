@@ -1,10 +1,15 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Entity
@@ -12,7 +17,7 @@ import java.util.Date;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
     @Column(nullable = false)
     private String name;
@@ -32,10 +37,10 @@ public class Player {
     private int experience;
 
     @Column
-    private double level = (Math.sqrt(2500 + 200 * experience) - 50) / 100;
+    private int level = (int) (Math.sqrt(2500 + 200 * experience) - 50) / 100;
 
-    @Column(name = "untilnextlevel")
-    private double untilNextLevel = 50 * (level + 1) * (level + 2) - experience;
+    @Column(name = "until_next_level")
+    private int untilNextLevel = 50 * (level + 1) * (level + 2) - experience;
 
     @Column(nullable = false)
     private Date birthday;

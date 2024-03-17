@@ -10,10 +10,10 @@ public interface PlayerService {
 
     PlayerDto updatePlayer(PlayerDto updatePlayerRequest);
 
-    PlayerDto getPlayerById(Long id);
+    PlayerDto getPlayerById(int id);
 
 
-    void deletePlayer(Long id);
+    void deletePlayer(int id);
 
     List<PlayerDto> getFilteredPlayers(PlayerFilter playerFilter);
 

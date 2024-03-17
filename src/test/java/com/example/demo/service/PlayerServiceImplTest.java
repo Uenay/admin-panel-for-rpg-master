@@ -43,7 +43,7 @@ class PlayerServiceImplTest {
 
     @Test
     void getPlayerById() {
-        Long id = 2L;
+        int id = 2;
         PlayerDto playerDto = PlayerDto.builder()
                 .name("name")
                 .birthday(new Date())
@@ -54,7 +54,7 @@ class PlayerServiceImplTest {
                 .experience(11)
                 .profession(Profession.ROGUE)
                 .untilNextLevel(1)
-                .id(2L)
+                .id(2)
                 .build();
         Player actualPlayer = playerRepository.findById(id).orElseThrow();
         assertEquals(playerDto.getName(), actualPlayer.getName());
@@ -71,9 +71,9 @@ class PlayerServiceImplTest {
 
     @Test
     void deletePlayer() {
-        Long id = 2L;
+        int id = 2;
         PlayerDto playerDto = PlayerDto.builder()
-                .id(2L)
+                .id(2)
                 .build();
         Player actualPlayer = playerRepository.findById(id).orElseThrow();
         assertEquals(playerDto.getId(), actualPlayer.getId());
@@ -91,7 +91,7 @@ class PlayerServiceImplTest {
                 .experience(11)
                 .profession(Profession.ROGUE)
                 .untilNextLevel(1)
-                .id(2L)
+                .id(2)
                 .build();
         Player player = DtoMapper.convertToPlayer(playerDto);
         Player updatedPlayer = playerRepository.save(player);
