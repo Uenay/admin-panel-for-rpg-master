@@ -55,4 +55,13 @@
                 )
         </sql>
     </changeSet>
+
+    <changeSet id="update player" author="author name">
+        <preConditions onFail="MARK_RAN">
+        </preConditions>
+        <sql>
+    ALTER TABLE player
+    RENAME COLUMN untilNextLevel TO until_next_level;
+</sql>
+        </changeSet>
 </databaseChangeLog>

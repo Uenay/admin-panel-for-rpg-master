@@ -6,20 +6,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
+
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlayerDto {
-    private Long id;
+    private Integer id;
     private String name;
     private String title;
     private Race race;
     private Profession profession;
     private int experience;
-    private double level;
-    private double untilNextLevel;
+    private int level;
+    private int untilNextLevel;
     private Date birthday;
     private Boolean banned;
 }

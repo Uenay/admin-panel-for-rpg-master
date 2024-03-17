@@ -7,7 +7,6 @@ import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
-import com.example.demo.entity.Player;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 import com.example.demo.filter.PlayerOrder;
@@ -31,16 +30,16 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToCreateResponse(createdPlayer);
     }
 
-    public GetPlayerResponse getPlayerById(Long id) {
-        Player player = DtoMapper.convertToPlayer(playerService.getPlayerById(id));
-        return DtoMapper.convertToGetResponse(player);
+    public GetPlayerResponse getPlayerById(int id) {
+        PlayerDto playerDto = playerService.getPlayerById(id);
+        return DtoMapper.convertToGetResponse(playerDto);
     }
 
-    public void deletePlayer(Long id) {
+    public void deletePlayer(int id) {
         playerService.deletePlayer(id);
     }
 
-    public UpdatePlayerResponse updatePlayer(Long id, UpdatePlayerRequest updatePlayerRequest) {
+    public UpdatePlayerResponse updatePlayer(int id, UpdatePlayerRequest updatePlayerRequest) {
         updatePlayerRequest.setId(id);
         PlayerDto playerDto = DtoMapper.convertToPlayerDto(updatePlayerRequest);
         PlayerDto updatedPlayer = playerService.updatePlayer(playerDto);

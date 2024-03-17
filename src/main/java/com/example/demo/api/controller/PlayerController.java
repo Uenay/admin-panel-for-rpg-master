@@ -20,17 +20,17 @@ import java.util.Date;
 import java.util.List;
 
 public interface PlayerController {
-    @PostMapping("/rest/player/create")
+    @PostMapping("/rest/players")
     CreatePlayerResponse createPlayer(@RequestBody CreatePlayerRequest createPlayerRequest);
 
     @GetMapping("/rest/players/{id}")
-    GetPlayerResponse getPlayerById(@PathVariable("id") Long id);
+    GetPlayerResponse getPlayerById(@PathVariable("id") int id);
 
-    @DeleteMapping("/rest/player/delete/{id}")
-    void deletePlayer(@PathVariable("id") Long id);
+    @DeleteMapping("/rest/players/{id}")
+    void deletePlayer(@PathVariable("id") int id);
 
     @PostMapping("/rest/players/{id}")
-    UpdatePlayerResponse updatePlayer(@PathVariable("id") Long id, @RequestBody UpdatePlayerRequest updatePlayerRequest);
+    UpdatePlayerResponse updatePlayer(@PathVariable("id") int id, @RequestBody UpdatePlayerRequest updatePlayerRequest);
 
     @GetMapping("/rest/players")
     List<GetPlayerResponse> getFilteredPlayers(@RequestParam(required = false) String name,
