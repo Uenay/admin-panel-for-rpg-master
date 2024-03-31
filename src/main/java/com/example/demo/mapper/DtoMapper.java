@@ -111,7 +111,6 @@ public class DtoMapper {
 
     public static Player convertToPlayer(PlayerDto playerDto) {
         Player player = new Player();
-        player.setId(playerDto.getId());
         player.setName(playerDto.getName());
         player.setTitle(playerDto.getTitle());
         player.setLevel(playerDto.getLevel());

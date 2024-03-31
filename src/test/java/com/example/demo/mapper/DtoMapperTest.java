@@ -81,7 +81,7 @@ class DtoMapperTest {
         assertEquals(playerDto.getName(), actualCreatePlayerResponse.getName());
         assertEquals(playerDto.getBanned(), actualCreatePlayerResponse.getBanned());
         assertEquals(playerDto.getExperience(), actualCreatePlayerResponse.getExperience());
-        assertEquals(playerDto.getBirthday(), actualCreatePlayerResponse.getBirthday());
+        assertEquals(playerDto.getBirthday().getTime(), actualCreatePlayerResponse.getBirthday());
         assertEquals(playerDto.getProfession(), actualCreatePlayerResponse.getProfession());
         assertEquals(playerDto.getRace(), actualCreatePlayerResponse.getRace());
         assertEquals(playerDto.getTitle(), actualCreatePlayerResponse.getTitle());
@@ -108,7 +108,7 @@ class DtoMapperTest {
         assertEquals(playerDto.getName(), actualUpdatePlayerResponse.getName());
         assertEquals(playerDto.getBanned(), actualUpdatePlayerResponse.getBanned());
         assertEquals(playerDto.getExperience(), actualUpdatePlayerResponse.getExperience());
-        assertEquals(playerDto.getBirthday(), actualUpdatePlayerResponse.getBirthday());
+        assertEquals(playerDto.getBirthday().getTime(), actualUpdatePlayerResponse.getBirthday());
         assertEquals(playerDto.getProfession(), actualUpdatePlayerResponse.getProfession());
         assertEquals(playerDto.getRace(), actualUpdatePlayerResponse.getRace());
         assertEquals(playerDto.getTitle(), actualUpdatePlayerResponse.getTitle());
@@ -168,7 +168,6 @@ class DtoMapperTest {
         assertEquals(playerDto.getTitle(), actualPlayer.getTitle());
         assertEquals(playerDto.getLevel(), actualPlayer.getLevel());
         assertEquals(playerDto.getUntilNextLevel(), actualPlayer.getUntilNextLevel());
-        assertEquals(playerDto.getId(), actualPlayer.getId());
 
     }
 
