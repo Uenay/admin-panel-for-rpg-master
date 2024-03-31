@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 
 public interface PlayerController {
@@ -37,8 +36,8 @@ public interface PlayerController {
                                                @RequestParam(required = false) String title,
                                                @RequestParam(required = false) Race race,
                                                @RequestParam(required = false) Profession profession,
-                                               @RequestParam(required = false) Date before,
-                                               @RequestParam(required = false) Date after,
+                                               @RequestParam(required = false) Long before,
+                                               @RequestParam(required = false) Long after,
                                                @RequestParam(required = false, defaultValue = "ID") PlayerOrder order,
                                                @RequestParam(required = false) Long minExperience,
                                                @RequestParam(required = false) Long maxExperience,
@@ -53,8 +52,8 @@ public interface PlayerController {
                                 @RequestParam(required = false) String title,
                                 @RequestParam(required = false) Race race,
                                 @RequestParam(required = false) Profession profession,
-                                @RequestParam(required = false) Date before,
-                                @RequestParam(required = false) Date after,
+                                @RequestParam(required = false) Long before,
+                                @RequestParam(required = false) Long after,
                                 @RequestParam(required = false) Long minExperience,
                                 @RequestParam(required = false) Long maxExperience,
                                 @RequestParam(required = false) Integer minLevel,

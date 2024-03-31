@@ -14,8 +14,8 @@ public class BasePlayerResponse {
     private Race race;
     private Profession profession;
     private int experience;
-    private double level;
-    private double untilNextLevel;
+    private int level;
+    private int untilNextLevel;
     private Long birthday;
     private Boolean banned;
 }

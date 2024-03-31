@@ -50,8 +50,8 @@ public class PlayerControllerImpl implements PlayerController {
                                                       String title,
                                                       Race race,
                                                       Profession profession,
-                                                      Date before,
-                                                      Date after,
+                                                      Long before,
+                                                      Long after,
                                                       PlayerOrder order,
                                                       Long minExperience,
                                                       Long maxExperience,
@@ -66,8 +66,8 @@ public class PlayerControllerImpl implements PlayerController {
                 .title(title)
                 .race(race)
                 .profession(profession)
-                .before(before)
-                .after(after)
+                .before(new Date(before))
+                .after(new Date(after))
                 .order(order)
                 .minExperience(minExperience)
                 .maxExperience(maxExperience)
@@ -87,8 +87,8 @@ public class PlayerControllerImpl implements PlayerController {
                                        String title,
                                        Race race,
                                        Profession profession,
-                                       Date before,
-                                       Date after,
+                                       Long before,
+                                       Long after,
                                        Long minExperience,
                                        Long maxExperience,
                                        Integer minLevel,
@@ -99,8 +99,8 @@ public class PlayerControllerImpl implements PlayerController {
                 .title(title)
                 .race(race)
                 .profession(profession)
-                .before(before)
-                .after(after)
+                .before(new Date(before))
+                .after(new Date(after))
                 .minExperience(minExperience)
                 .maxExperience(maxExperience)
                 .minLevel(minLevel)
