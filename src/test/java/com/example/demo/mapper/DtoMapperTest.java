@@ -134,7 +134,7 @@ class DtoMapperTest {
         assertEquals(player.getName(), actualGetPlayerResponse.getName());
         assertEquals(player.getBanned(), actualGetPlayerResponse.getBanned());
         assertEquals(player.getExperience(), actualGetPlayerResponse.getExperience());
-        assertEquals(player.getBirthday(), actualGetPlayerResponse.getBirthday());
+        assertEquals(player.getBirthday().getTime(), actualGetPlayerResponse.getBirthday());
         assertEquals(player.getProfession(), actualGetPlayerResponse.getProfession());
         assertEquals(player.getRace(), actualGetPlayerResponse.getRace());
         assertEquals(player.getTitle(), actualGetPlayerResponse.getTitle());
