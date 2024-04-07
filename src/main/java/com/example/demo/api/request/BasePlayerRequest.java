@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @SuperBuilder
@@ -21,11 +21,11 @@ public abstract class BasePlayerRequest {
     @Min(1)
     @Max(30)
     private String title;
-    @NotBlank
+    @NotNull
     private Race race;
-    @NotBlank
+    @NotNull
     private Profession profession;
-    @NotBlank
+    @NotNull
     private Date birthday;
     private Boolean banned;
     @Min(1)
