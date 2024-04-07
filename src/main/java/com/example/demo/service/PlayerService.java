@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.dto.PlayerDto;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public interface PlayerService {
 
     PlayerDto updatePlayer(PlayerDto updatePlayerRequest);
 
+    @Nullable
     PlayerDto getPlayerById(int id);
 
 

@@ -3,12 +3,14 @@ package com.example.demo.api.controller;
 
 import com.example.demo.api.request.CreatePlayerRequest;
 import com.example.demo.api.request.UpdatePlayerRequest;
+import com.example.demo.api.response.BaseResponse;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 import com.example.demo.filter.PlayerOrder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,7 @@ public interface PlayerController {
     CreatePlayerResponse createPlayer(@Valid @RequestBody CreatePlayerRequest createPlayerRequest);
 
     @GetMapping("/rest/players/{id}")
-    GetPlayerResponse getPlayerById(@PathVariable("id") @Positive int id);
+    ResponseEntity<BaseResponse> getPlayerById(@PathVariable("id") @Positive int id);
 
     @DeleteMapping("/rest/players/{id}")
     void deletePlayer(@PathVariable("id") @Positive int id);

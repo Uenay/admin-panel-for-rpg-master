@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -30,7 +31,7 @@ public class PlayerControllerImplValidationTest {
     private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
     private static final String DELETE_PLAYER_URL = "/rest/players/{id}";
     @Test
-    void createPlayerMvc() throws Exception {
+    void createWrongPlayerMvc() throws Exception {
         CreatePlayerRequest createPlayerRequest = CreatePlayerRequest.builder()
                 .name("nameeeeeeeeeeeeee")
                 .banned(true)
@@ -47,6 +48,26 @@ public class PlayerControllerImplValidationTest {
                                 .content(objectMapper.writeValueAsString(createPlayerRequest))
                                 .header("Content-Type", "application/json")
 
+                )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void getPlayerByNotFoundIdMvc() throws Exception {
+
+        mockMvc.perform(
+                        get(GET_PLAYER_URL, 20000)
+                                .header("Content-Type", "application/json")
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getPlayerByWrongIdMvc() throws Exception {
+
+        mockMvc.perform(
+                        get(GET_PLAYER_URL, -2)
+                                .header("Content-Type", "application/json")
                 )
                 .andExpect(status().isBadRequest());
     }

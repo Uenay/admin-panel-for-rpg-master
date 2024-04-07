@@ -44,8 +44,8 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDto getPlayerById(int id) {
-        Player player = playerRepository.findById(id).orElseThrow();
-        return DtoMapper.convertToPlayerDto(player);
+        Player player = playerRepository.findById(id).orElse(null);
+        return player == null ? null : DtoMapper.convertToPlayerDto(player);
     }
 
     @Override

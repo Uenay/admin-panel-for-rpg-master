@@ -3,8 +3,10 @@ package com.example.demo.api.controller;
 import com.example.demo.api.request.CreatePlayerRequest;
 import com.example.demo.api.request.PlayerFilter;
 import com.example.demo.api.request.UpdatePlayerRequest;
+import com.example.demo.api.response.BaseResponse;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
+import com.example.demo.api.response.NotFoundResponse;
 import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Profession;
@@ -13,6 +15,7 @@ import com.example.demo.filter.PlayerOrder;
 import com.example.demo.mapper.DtoMapper;
 import com.example.demo.service.PlayerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,12 +33,28 @@ public class PlayerControllerImpl implements PlayerController {
         return DtoMapper.convertToCreateResponse(createdPlayer);
     }
 
-    public GetPlayerResponse getPlayerById(int id) {
+    public ResponseEntity<BaseResponse> getPlayerById(int id) {
         PlayerDto playerDto = playerService.getPlayerById(id);
-        return DtoMapper.convertToGetResponse(playerDto);
+
+        BaseResponse baseResponse;
+        HttpStatus httpStatus;
+        if (playerDto == null) {
+            baseResponse = NotFoundResponse.builder()
+                    .message("Player with id = " + id + " was not found")
+                    .build();
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            baseResponse = DtoMapper.convertToGetResponse(playerDto);
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(baseResponse, httpStatus);
     }
 
     public void deletePlayer(int id) {
+        BaseResponse baseResponse;
+        HttpStatus httpStatus;
+
         playerService.deletePlayer(id);
     }
 
