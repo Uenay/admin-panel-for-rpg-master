@@ -9,6 +9,7 @@ import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 import com.example.demo.filter.PlayerOrder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,20 +17,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
-
+@Validated
 public interface PlayerController {
     @PostMapping("/rest/players")
-    CreatePlayerResponse createPlayer(@RequestBody CreatePlayerRequest createPlayerRequest);
+    CreatePlayerResponse createPlayer(@Valid @RequestBody CreatePlayerRequest createPlayerRequest);
 
     @GetMapping("/rest/players/{id}")
-    GetPlayerResponse getPlayerById(@PathVariable("id") int id);
+    GetPlayerResponse getPlayerById(@PathVariable("id") @Positive int id);
 
     @DeleteMapping("/rest/players/{id}")
-    void deletePlayer(@PathVariable("id") int id);
+    void deletePlayer(@PathVariable("id") @Positive int id);
 
     @PostMapping("/rest/players/{id}")
-    UpdatePlayerResponse updatePlayer(@PathVariable("id") int id, @RequestBody UpdatePlayerRequest updatePlayerRequest);
+    UpdatePlayerResponse updatePlayer(@PathVariable("id") @Positive int id, @Valid @RequestBody UpdatePlayerRequest updatePlayerRequest);
 
     @GetMapping("/rest/players")
     List<GetPlayerResponse> getFilteredPlayers(@RequestParam(required = false) String name,
