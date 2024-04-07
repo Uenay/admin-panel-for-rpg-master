@@ -40,19 +40,25 @@ public class PlayerFilterSpec implements Specification<Player> {
         }
 
         if (playerFilter.getMaxLevel() != null){
-            predicates.add(criteriaBuilder.lessThan(root.get("level"), playerFilter.getMaxLevel()));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("level"), playerFilter.getMaxLevel()));
         }
         if (playerFilter.getMinLevel() != null){
-            predicates.add(criteriaBuilder.greaterThan(root.get("level"), playerFilter.getMinLevel()));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("level"), playerFilter.getMinLevel()));
         }
         if (playerFilter.getMaxExperience() != null){
-            predicates.add(criteriaBuilder.lessThan(root.get("experience"), playerFilter.getMaxExperience()));
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("experience"), playerFilter.getMaxExperience()));
         }
         if (playerFilter.getMinExperience() != null){
-            predicates.add(criteriaBuilder.greaterThan(root.get("experience"), playerFilter.getMinExperience()));
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("experience"), playerFilter.getMinExperience()));
         }
         if (playerFilter.getBanned() != null){
             predicates.add(criteriaBuilder.equal(root.get("banned"), playerFilter.getBanned()));
+        }
+        if (playerFilter.getBefore() != null){
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("birthday"), playerFilter.getBefore()));
+        }
+        if (playerFilter.getAfter() != null){
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("birthday"), playerFilter.getAfter()));
         }
         Predicate[] predicatesArray = predicates.toArray(predicates.toArray(new Predicate[0]));
         return criteriaBuilder.and(predicatesArray);

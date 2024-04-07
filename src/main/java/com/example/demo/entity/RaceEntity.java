@@ -10,8 +10,8 @@ import javax.persistence.*;
 public class RaceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 }

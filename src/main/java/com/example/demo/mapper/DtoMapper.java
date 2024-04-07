@@ -27,6 +27,7 @@ public class DtoMapper {
                 .experience(createPlayerRequest.getExperience())
                 .build();
     }
+
     public static PlayerDto convertToPlayerDto(UpdatePlayerRequest updatePlayerRequest) {
         return PlayerDto.builder()
                 .id(updatePlayerRequest.getId())
@@ -43,7 +44,7 @@ public class DtoMapper {
     public static CreatePlayerResponse convertToCreateResponse(PlayerDto playerDto) {
         return CreatePlayerResponse.builder()
                 .name(playerDto.getName())
-                .birthday(playerDto.getBirthday())
+                .birthday(playerDto.getBirthday().getTime())
                 .race(playerDto.getRace())
                 .title(playerDto.getTitle())
                 .level(playerDto.getLevel())
@@ -58,7 +59,7 @@ public class DtoMapper {
     public static UpdatePlayerResponse convertToUpdateResponse(PlayerDto playerDto) {
         return UpdatePlayerResponse.builder()
                 .name(playerDto.getName())
-                .birthday(playerDto.getBirthday())
+                .birthday(playerDto.getBirthday().getTime())
                 .race(playerDto.getRace())
                 .title(playerDto.getTitle())
                 .level(playerDto.getLevel())
@@ -70,19 +71,21 @@ public class DtoMapper {
                 .build();
     }
 
-    public static GetPlayerResponse convertToGetResponse(Player player) {
+    public static GetPlayerResponse convertToGetResponse(PlayerDto playerDto) {
         return GetPlayerResponse.builder()
-                .name(player.getName())
-                .birthday(player.getBirthday())
-                .race(Race.valueOf(player.getRace().getName()))
-                .title(player.getTitle())
-                .level(player.getLevel())
-                .banned(player.getBanned())
-                .experience(player.getExperience())
-                .profession(Profession.valueOf(player.getProfession().getName()))
-                .untilNextLevel(player.getUntilNextLevel())
+                .id(playerDto.getId())
+                .name(playerDto.getName())
+                .birthday(playerDto.getBirthday().getTime())
+                .race(playerDto.getRace())
+                .title(playerDto.getTitle())
+                .level(playerDto.getLevel())
+                .banned(playerDto.getBanned())
+                .experience(playerDto.getExperience())
+                .profession(playerDto.getProfession())
+                .untilNextLevel(playerDto.getUntilNextLevel())
                 .build();
     }
+
     public static List<GetPlayerResponse> convertToGetResponse(List<PlayerDto> playerDtos) {
         List<GetPlayerResponse> getPlayerResponseList = new ArrayList<>();
 
@@ -96,7 +99,7 @@ public class DtoMapper {
                     .experience(playerDto.getExperience())
                     .level(playerDto.getLevel())
                     .untilNextLevel(playerDto.getUntilNextLevel())
-                    .birthday(playerDto.getBirthday())
+                    .birthday(playerDto.getBirthday().getTime())
                     .banned(playerDto.getBanned())
                     .build();
 
@@ -111,17 +114,25 @@ public class DtoMapper {
         player.setName(playerDto.getName());
         player.setTitle(playerDto.getTitle());
         player.setLevel(playerDto.getLevel());
+        player.setRace(convertToRace(playerDto.getRace()));
+        player.setProfession(convertToProfession(playerDto.getProfession()));
         player.setBirthday(playerDto.getBirthday());
-        RaceEntity race = new RaceEntity();
-        race.setName(playerDto.getRace().toString());
-        player.setRace(race);
-        ProfessionEntity profession = new ProfessionEntity();
-        profession.setName(playerDto.getProfession().toString());
-        player.setProfession(profession);
         player.setExperience(playerDto.getExperience());
         player.setBanned(playerDto.getBanned());
         player.setUntilNextLevel(playerDto.getUntilNextLevel());
         return player;
+    }
+
+    public static RaceEntity convertToRace(Race race) {
+        RaceEntity entity = new RaceEntity();
+        entity.setName(race.name());
+        return entity;
+    }
+
+    public static ProfessionEntity convertToProfession(Profession profession) {
+        ProfessionEntity entity = new ProfessionEntity();
+        entity.setName(profession.name());
+        return entity;
     }
 
     public static PlayerDto convertToPlayerDto(Player player) {
