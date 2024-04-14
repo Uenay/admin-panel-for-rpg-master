@@ -17,8 +17,8 @@ CREATE TABLE profession
 CREATE TABLE player
 (
     id               SERIAL PRIMARY KEY,
-    name             VARCHAR(12) NOT NULL,
-    title            VARCHAR(30) NULL,
+    name             VARCHAR(24) NOT NULL,
+    title            VARCHAR(60) NULL,
     race_id          INTEGER REFERENCES race(id),
     experience       INTEGER     CHECK ( 0 < experience AND experience <= 10000000 ),
     profession_id    INTEGER REFERENCES profession(id),

@@ -44,18 +44,25 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDto getPlayerById(int id) {
-        Player player = playerRepository.findById(id).orElseThrow();
-        return DtoMapper.convertToPlayerDto(player);
+        Player player = playerRepository.findById(id).orElse(null);
+        return player == null ? null : DtoMapper.convertToPlayerDto(player);
     }
 
     @Override
     public void deletePlayer(int id) {
-        playerRepository.delete(playerRepository.findById(id).orElseThrow());
+        Player player = playerRepository.findById(id).orElse(null);
+        if (player != null) {
+            playerRepository.delete(player);
+        }
     }
 
     @Override
     public PlayerDto updatePlayer(PlayerDto updatePlayerRequest) {
-        Player player = playerRepository.findById(updatePlayerRequest.getId()).orElseThrow();
+        Player player = playerRepository.findById(updatePlayerRequest.getId()).orElse(null);
+        if (player == null) {
+            return null;
+        }
+
         if (updatePlayerRequest.getName() != null) {
             player.setName(updatePlayerRequest.getName());
         }
@@ -77,8 +84,8 @@ public class PlayerServiceImpl implements PlayerService {
         if (updatePlayerRequest.getTitle() != null) {
             player.setTitle(updatePlayerRequest.getTitle());
         }
-        Player updatedPlayer = playerRepository.save(player);
-        return DtoMapper.convertToPlayerDto(updatedPlayer);
+
+        return DtoMapper.convertToPlayerDto(playerRepository.save(player));
     }
 
     @Override

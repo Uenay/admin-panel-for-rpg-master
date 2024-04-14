@@ -9,6 +9,6 @@ import java.util.Date;
 public class MillisToDateConverter implements Converter<String, Date> {
     @Override
     public Date convert(String source) {
-        return new Date(Long.valueOf(source));
+        return new Date(Long.parseLong(source));
     }
 }

@@ -3,11 +3,13 @@ package com.example.demo.api.response;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-public class BasePlayerResponse {
+public class BasePlayerResponse extends BaseResponse {
     private Integer id;
     private String name;
     private String title;
