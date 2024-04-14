@@ -59,30 +59,33 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDto updatePlayer(PlayerDto updatePlayerRequest) {
         Player player = playerRepository.findById(updatePlayerRequest.getId()).orElse(null);
-        if (player != null) {
-            if (updatePlayerRequest.getName() != null) {
-                player.setName(updatePlayerRequest.getName());
-            }
-            if (updatePlayerRequest.getBanned() != null) {
-                player.setBanned(updatePlayerRequest.getBanned());
-            }
-            if (updatePlayerRequest.getRace() != null) {
-                player.setRace(raceRepository.findByName(updatePlayerRequest.getRace().toString()));
-            }
-            if (updatePlayerRequest.getBirthday() != null) {
-                player.setBirthday(updatePlayerRequest.getBirthday());
-            }
-            if (updatePlayerRequest.getExperience() != 0) {
-                player.setExperience(updatePlayerRequest.getExperience());
-            }
-            if (updatePlayerRequest.getProfession() != null) {
-                player.setProfession(professionRepository.findByName(updatePlayerRequest.getProfession().toString()));
-            }
-            if (updatePlayerRequest.getTitle() != null) {
-                player.setTitle(updatePlayerRequest.getTitle());
-            }
+        if (player == null) {
+            return null;
         }
-        return player == null ? null : DtoMapper.convertToPlayerDto(playerRepository.save(player));
+
+        if (updatePlayerRequest.getName() != null) {
+            player.setName(updatePlayerRequest.getName());
+        }
+        if (updatePlayerRequest.getBanned() != null) {
+            player.setBanned(updatePlayerRequest.getBanned());
+        }
+        if (updatePlayerRequest.getRace() != null) {
+            player.setRace(raceRepository.findByName(updatePlayerRequest.getRace().toString()));
+        }
+        if (updatePlayerRequest.getBirthday() != null) {
+            player.setBirthday(updatePlayerRequest.getBirthday());
+        }
+        if (updatePlayerRequest.getExperience() != 0) {
+            player.setExperience(updatePlayerRequest.getExperience());
+        }
+        if (updatePlayerRequest.getProfession() != null) {
+            player.setProfession(professionRepository.findByName(updatePlayerRequest.getProfession().toString()));
+        }
+        if (updatePlayerRequest.getTitle() != null) {
+            player.setTitle(updatePlayerRequest.getTitle());
+        }
+
+        return DtoMapper.convertToPlayerDto(playerRepository.save(player));
     }
 
     @Override

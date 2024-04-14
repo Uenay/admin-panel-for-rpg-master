@@ -35,9 +35,6 @@ class PlayerControllerImplTest {
     private ObjectMapper objectMapper;
     @Autowired
     private PlayerService playerService;
-    @Autowired
-    private MillisToDateConverter millisToDateConverter;
-
 
     private static final String CREATE_PLAYER_URL = "/rest/players";
     private static final String GET_PLAYER_URL = "/rest/players/{id}";
@@ -58,7 +55,6 @@ class PlayerControllerImplTest {
                 .title("title")
                 .build();
 
-
         mockMvc.perform(
                 post(CREATE_PLAYER_URL)
                         .content(objectMapper.writeValueAsString(createPlayerRequest))
@@ -75,12 +71,9 @@ class PlayerControllerImplTest {
                 .andExpect(jsonPath("$.race").value(createPlayerRequest.getRace().name()))
                 .andExpect(jsonPath("$.title").value(createPlayerRequest.getTitle()));
     }
+
     @Test
     void getPlayerByIdMvc() throws Exception {
-        // добавить игрока, получить его айди и только после этого мы точно уверены что такого игрока мы найдем
-
-
-
         PlayerDto playerDto = PlayerDto.builder()
                 .name("name")
                 .birthday(new Date(1, 1, 1))
@@ -94,8 +87,6 @@ class PlayerControllerImplTest {
                 .build();
 
         PlayerDto createdPlayer = playerService.createPlayer(playerDto);
-
-
 
         mockMvc.perform(
                         get(GET_PLAYER_URL, createdPlayer.getId())
@@ -114,7 +105,6 @@ class PlayerControllerImplTest {
 
     @Test
     void updatePlayerMvc() throws Exception {
-    //сначала создаем, понимаем, какой есть айди и его обновляем
         PlayerDto playerDto = PlayerDto.builder()
                 .name("name")
                 .birthday(new Date(1, 1, 1))
@@ -139,7 +129,6 @@ class PlayerControllerImplTest {
                 .profession(Profession.ROGUE)
                 .id(createdPlayer.getId())
                 .build();
-
 
         mockMvc.perform(
                         post(UPDATE_PLAYER_URL, createdPlayer.getId())
@@ -309,8 +298,6 @@ class PlayerControllerImplTest {
         Integer maxLevel = 100;
         Boolean banned = false;
 
-
-
         mockMvc.perform(
                         get(GET_FILTERED_PLAYER_COUNT_URL)
                                 .param("title", title)
@@ -327,9 +314,8 @@ class PlayerControllerImplTest {
                                 .header("Content-Type", "application/json")
                 )
                 .andExpect(status().isOk())
-                        .andExpect(content().string("2"));
+                .andExpect(content().string("2"));
     }
-
 
     @Test
     void deletePlayerMvc() throws Exception{
@@ -353,6 +339,4 @@ class PlayerControllerImplTest {
         )
                 .andExpect(status().isOk());
     }
-
-
 }

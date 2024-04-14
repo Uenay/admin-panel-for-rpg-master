@@ -30,7 +30,7 @@ public interface PlayerController {
     ResponseEntity<BaseResponse> getPlayerById(@PathVariable("id") @Positive int id);
 
     @DeleteMapping("/rest/players/{id}")
-    ResponseEntity deletePlayer(@PathVariable("id") @Positive int id);
+    ResponseEntity<Void> deletePlayer(@PathVariable("id") @Positive int id);
 
     @PostMapping("/rest/players/{id}")
     ResponseEntity<BaseResponse> updatePlayer(@PathVariable("id") @Positive int id, @Valid @RequestBody UpdatePlayerRequest updatePlayerRequest);

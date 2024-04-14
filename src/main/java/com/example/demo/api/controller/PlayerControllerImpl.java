@@ -51,12 +51,8 @@ public class PlayerControllerImpl implements PlayerController {
     }
 
     public ResponseEntity<Void> deletePlayer(int id) {
-        BaseResponse baseResponse;
         HttpStatus httpStatus;
         if (playerService.getPlayerById(id) == null) {
-            baseResponse = NotFoundResponse.builder()
-                    .message("Player with id = " + id + " was not found")
-                    .build();
             httpStatus = HttpStatus.NOT_FOUND;
         } else {
             playerService.deletePlayer(id);

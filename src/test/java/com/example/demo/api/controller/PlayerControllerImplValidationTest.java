@@ -29,10 +29,12 @@ public class PlayerControllerImplValidationTest {
     private ObjectMapper objectMapper;
     @Autowired
     private PlayerService playerService;
+
     private static final String CREATE_PLAYER_URL = "/rest/players";
     private static final String GET_PLAYER_URL = "/rest/players/{id}";
     private static final String UPDATE_PLAYER_URL = "/rest/players/{id}";
     private static final String DELETE_PLAYER_URL = "/rest/players/{id}";
+
     @Test
     void createWrongPlayerMvc() throws Exception {
         CreatePlayerRequest createPlayerRequest = CreatePlayerRequest.builder()
@@ -45,19 +47,16 @@ public class PlayerControllerImplValidationTest {
                 .title("titleeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                 .build();
 
-
         mockMvc.perform(
                         post(CREATE_PLAYER_URL)
                                 .content(objectMapper.writeValueAsString(createPlayerRequest))
                                 .header("Content-Type", "application/json")
-
                 )
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void getPlayerByNotFoundIdMvc() throws Exception {
-
         mockMvc.perform(
                         get(GET_PLAYER_URL, 20000)
                                 .header("Content-Type", "application/json")
@@ -67,13 +66,13 @@ public class PlayerControllerImplValidationTest {
 
     @Test
     void getPlayerByWrongIdMvc() throws Exception {
-
         mockMvc.perform(
                         get(GET_PLAYER_URL, -2)
                                 .header("Content-Type", "application/json")
                 )
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void updatePlayerByNotFoundIdMvc() throws Exception {
         UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
@@ -94,6 +93,7 @@ public class PlayerControllerImplValidationTest {
                 )
                 .andExpect(status().isNotFound());
     }
+
     @Test
     void updatePlayerByWrongIdMvc() throws Exception {
         UpdatePlayerRequest updatePlayerRequest = UpdatePlayerRequest.builder()
@@ -114,6 +114,7 @@ public class PlayerControllerImplValidationTest {
                 )
                 .andExpect(status().isNotFound());
     }
+
     @Test
     void updateWrongPlayerMvc() throws Exception {
         PlayerDto playerDto = PlayerDto.builder()
@@ -141,7 +142,6 @@ public class PlayerControllerImplValidationTest {
                 .id(createdPlayer.getId())
                 .build();
 
-
         mockMvc.perform(
                         post(UPDATE_PLAYER_URL, createdPlayer.getId())
                                 .content(objectMapper.writeValueAsString(updatePlayerRequest))
@@ -150,9 +150,9 @@ public class PlayerControllerImplValidationTest {
                 )
                 .andExpect(status().isBadRequest());
     }
+
     @Test
     void deletePlayerByNotFoundIdMvc() throws Exception {
-
         mockMvc.perform(
                         delete(DELETE_PLAYER_URL, 20000)
                                 .header("Content-Type", "application/json")
@@ -162,7 +162,6 @@ public class PlayerControllerImplValidationTest {
 
     @Test
     void deletePlayerByWrongIdMvc() throws Exception {
-
         mockMvc.perform(
                         delete(DELETE_PLAYER_URL, -2)
                                 .header("Content-Type", "application/json")
