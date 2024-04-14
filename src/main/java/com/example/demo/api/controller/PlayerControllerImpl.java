@@ -7,7 +7,6 @@ import com.example.demo.api.response.BaseResponse;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
 import com.example.demo.api.response.NotFoundResponse;
-import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.dto.PlayerDto;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
@@ -51,18 +50,38 @@ public class PlayerControllerImpl implements PlayerController {
         return new ResponseEntity<>(baseResponse, httpStatus);
     }
 
-    public void deletePlayer(int id) {
+    public ResponseEntity<Void> deletePlayer(int id) {
         BaseResponse baseResponse;
         HttpStatus httpStatus;
-
-        playerService.deletePlayer(id);
+        if (playerService.getPlayerById(id) == null) {
+            baseResponse = NotFoundResponse.builder()
+                    .message("Player with id = " + id + " was not found")
+                    .build();
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            playerService.deletePlayer(id);
+            httpStatus = HttpStatus.OK;
+        }
+        return ResponseEntity.status(httpStatus).build();
     }
 
-    public UpdatePlayerResponse updatePlayer(int id, UpdatePlayerRequest updatePlayerRequest) {
+    public ResponseEntity<BaseResponse> updatePlayer(int id, UpdatePlayerRequest updatePlayerRequest) {
         updatePlayerRequest.setId(id);
-        PlayerDto playerDto = DtoMapper.convertToPlayerDto(updatePlayerRequest);
-        PlayerDto updatedPlayer = playerService.updatePlayer(playerDto);
-        return DtoMapper.convertToUpdateResponse(updatedPlayer);
+        BaseResponse baseResponse;
+        HttpStatus httpStatus;
+        if (playerService.getPlayerById(id) == null) {
+            baseResponse = NotFoundResponse.builder()
+                    .message("Player with id = " + id + " was not found")
+                    .build();
+            httpStatus = HttpStatus.NOT_FOUND;
+        } else {
+            PlayerDto playerDto = DtoMapper.convertToPlayerDto(updatePlayerRequest);
+            PlayerDto updatedPlayer = playerService.updatePlayer(playerDto);
+            baseResponse = DtoMapper.convertToUpdateResponse(updatedPlayer);
+            httpStatus = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(baseResponse, httpStatus);
     }
 
     public List<GetPlayerResponse> getFilteredPlayers(String name,

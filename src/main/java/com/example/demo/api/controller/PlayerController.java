@@ -6,7 +6,6 @@ import com.example.demo.api.request.UpdatePlayerRequest;
 import com.example.demo.api.response.BaseResponse;
 import com.example.demo.api.response.CreatePlayerResponse;
 import com.example.demo.api.response.GetPlayerResponse;
-import com.example.demo.api.response.UpdatePlayerResponse;
 import com.example.demo.entity.Profession;
 import com.example.demo.entity.Race;
 import com.example.demo.filter.PlayerOrder;
@@ -31,10 +30,10 @@ public interface PlayerController {
     ResponseEntity<BaseResponse> getPlayerById(@PathVariable("id") @Positive int id);
 
     @DeleteMapping("/rest/players/{id}")
-    void deletePlayer(@PathVariable("id") @Positive int id);
+    ResponseEntity deletePlayer(@PathVariable("id") @Positive int id);
 
     @PostMapping("/rest/players/{id}")
-    UpdatePlayerResponse updatePlayer(@PathVariable("id") @Positive int id, @Valid @RequestBody UpdatePlayerRequest updatePlayerRequest);
+    ResponseEntity<BaseResponse> updatePlayer(@PathVariable("id") @Positive int id, @Valid @RequestBody UpdatePlayerRequest updatePlayerRequest);
 
     @GetMapping("/rest/players")
     List<GetPlayerResponse> getFilteredPlayers(@RequestParam(required = false) String name,

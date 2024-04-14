@@ -17,8 +17,8 @@ CREATE TABLE profession
 CREATE TABLE player
 (
     id               SERIAL PRIMARY KEY,
-    name             VARCHAR(12) NOT NULL,
-    title            VARCHAR(30) NULL,
+    name             VARCHAR(24) NOT NULL,
+    title            VARCHAR(60) NULL,
     race_id          INTEGER REFERENCES race(id),
     experience       INTEGER     CHECK ( 0 < experience AND experience <= 10000000 ),
     profession_id    INTEGER REFERENCES profession(id),
@@ -49,13 +49,13 @@ VALUES ('WARRIOR'),
        ('DRUID');
 
 INSERT INTO player(name, title, race_id, profession_id, birthday, banned, experience, level, until_next_level)
-VALUES ('Ниус', 'Приходящий Без Шума', 7, 2, '2010-10-12', false, 58347, 33, 1153)
+VALUES ('Ниус', 'Приходящий', 7, 2, '2010-10-12', false, 58347, 33, 1153)
      , ('Никрашш', 'НайтВульф', 5, 7, '2010-02-14', false, 174403, 58, 2597)
      , ('Эззэссэль', 'шипящая', 2, 4, '2006-02-28', true, 804, 3, 196)
      , ('Бэлан', 'Тсе Раа', 2, 2, '2008-02-25', true, 44553, 29, 1947)
      , ('Элеонора', 'Бабушка', 1, 3, '2006-01-07', true, 63986, 35, 2614)
-     , ('Эман', 'Ухастый Летун', 3, 3, '2004-06-21', false, 163743, 56, 1557)
-     , ('Талан', 'Рожденный в Бронксе', 4, 2, '2005-05-15', false, 68950, 36, 1350)
+     , ('Эман', 'Ухастый', 3, 3, '2004-06-21', false, 163743, 56, 1557)
+     , ('Талан', 'Рожденный', 4, 2, '2005-05-15', false, 68950, 36, 1350)
      , ('Арилан', 'Благотворитель', 3, 3, '2006-08-10', false, 61023, 34, 1977)
      , ('Деракт', 'Эльфёнок Красное Ухо', 3, 2, '2010-06-22', false, 156630, 55, 2970)
      , ('Архилл', 'Смертоносный', 4, 5, '2005-01-12', false, 76010, 38, 1990)

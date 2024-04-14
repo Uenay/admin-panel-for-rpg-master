@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface PlayerService {
     PlayerDto createPlayer(PlayerDto createPlayerRequest);
-
+    @Nullable
     PlayerDto updatePlayer(PlayerDto updatePlayerRequest);
 
     @Nullable
     PlayerDto getPlayerById(int id);
 
-
+    @Nullable
     void deletePlayer(int id);
 
     List<PlayerDto> getFilteredPlayers(PlayerFilter playerFilter);

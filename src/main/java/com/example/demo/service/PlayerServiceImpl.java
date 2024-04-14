@@ -50,35 +50,39 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void deletePlayer(int id) {
-        playerRepository.delete(playerRepository.findById(id).orElseThrow());
+        Player player = playerRepository.findById(id).orElse(null);
+        if (player != null) {
+            playerRepository.delete(player);
+        }
     }
 
     @Override
     public PlayerDto updatePlayer(PlayerDto updatePlayerRequest) {
-        Player player = playerRepository.findById(updatePlayerRequest.getId()).orElseThrow();
-        if (updatePlayerRequest.getName() != null) {
-            player.setName(updatePlayerRequest.getName());
+        Player player = playerRepository.findById(updatePlayerRequest.getId()).orElse(null);
+        if (player != null) {
+            if (updatePlayerRequest.getName() != null) {
+                player.setName(updatePlayerRequest.getName());
+            }
+            if (updatePlayerRequest.getBanned() != null) {
+                player.setBanned(updatePlayerRequest.getBanned());
+            }
+            if (updatePlayerRequest.getRace() != null) {
+                player.setRace(raceRepository.findByName(updatePlayerRequest.getRace().toString()));
+            }
+            if (updatePlayerRequest.getBirthday() != null) {
+                player.setBirthday(updatePlayerRequest.getBirthday());
+            }
+            if (updatePlayerRequest.getExperience() != 0) {
+                player.setExperience(updatePlayerRequest.getExperience());
+            }
+            if (updatePlayerRequest.getProfession() != null) {
+                player.setProfession(professionRepository.findByName(updatePlayerRequest.getProfession().toString()));
+            }
+            if (updatePlayerRequest.getTitle() != null) {
+                player.setTitle(updatePlayerRequest.getTitle());
+            }
         }
-        if (updatePlayerRequest.getBanned() != null) {
-            player.setBanned(updatePlayerRequest.getBanned());
-        }
-        if (updatePlayerRequest.getRace() != null) {
-            player.setRace(raceRepository.findByName(updatePlayerRequest.getRace().toString()));
-        }
-        if (updatePlayerRequest.getBirthday() != null) {
-            player.setBirthday(updatePlayerRequest.getBirthday());
-        }
-        if (updatePlayerRequest.getExperience() != 0) {
-            player.setExperience(updatePlayerRequest.getExperience());
-        }
-        if (updatePlayerRequest.getProfession() != null) {
-            player.setProfession(professionRepository.findByName(updatePlayerRequest.getProfession().toString()));
-        }
-        if (updatePlayerRequest.getTitle() != null) {
-            player.setTitle(updatePlayerRequest.getTitle());
-        }
-        Player updatedPlayer = playerRepository.save(player);
-        return DtoMapper.convertToPlayerDto(updatedPlayer);
+        return player == null ? null : DtoMapper.convertToPlayerDto(playerRepository.save(player));
     }
 
     @Override
